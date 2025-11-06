@@ -1,0 +1,262 @@
+<!-- KING v5.3 — Parte 1/3 -->
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>KING</title>
+<meta name="theme-color" content="#0a1224">
+
+<!-- Manifesto embutido -->
+<link rel="manifest" href="data:application/manifest+json,{
+  &quot;name&quot;:&quot;KING&quot;,
+  &quot;short_name&quot;:&quot;KING&quot;,
+  &quot;display&quot;:&quot;standalone&quot;,
+  &quot;start_url&quot;:&quot;.&quot;,
+  &quot;background_color&quot;:&quot;#0a1224&quot;,
+  &quot;theme_color&quot;:&quot;#0a1224&quot;,
+  &quot;icons&quot;:[
+    {&quot;src&quot;:&quot;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAABvElEQVRYR+2WwU3DMBBFXxMEUgBC0AQeAaUAB6AAfEoTgI0kHYB1pB0d7blJZDbTeL3nySu/OzM2eknmxwl7EqxUgtTjCOUKAo0ih7vYZ3cQgr7x9Rx0K6oZ+0uE0s4LUWZydh8aZa3EIPKOVF1DAc6vA5lk7Y4nyMWV/hAp61B/wmXL4/4KwwMLaT5X4D8d4KpD9EfBqBspDMb00pUu5ZOEe1m00kwXq9Wq/dUexnmY5SJL3YCVvw3BuH0wH6+IFPLg7R5mRgDVVql4hyzOhWEFgAASccF8x2OM/19t6xyqtUKJ/ToHUNxDWKYiIpn5jCIz7Ewn/bUSbY3u2u7MGNMiM+69ELMPWve1X1/FYmkIgAfHc91vq8E8JKw2TzORCJ6h3dRdrtdz+JR5yZOn95ikBA8Y6LazPcNyKgoAhnjPHU3TdM16vV5TqdTrmq9dr8ZGR6DqvV6r/X4nVgsVrtdbqYLCn8CRsP0f5M8KRwAAAABJRU5ErkJggg==&quot;,
+     &quot;sizes&quot;:&quot;64x64 128x128 256x256 512x512&quot;,
+     &quot;type&quot;:&quot;image/png&quot;}
+  ]
+}">
+
+<!-- Favicon -->
+<link rel="icon" type="image/png" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAABvElEQVRYR+2WwU3DMBBFXxMEUgBC0AQeAaUAB6AAfEoTgI0kHYB1pB0d7blJZDbTeL3nySu/OzM2eknmxwl7EqxUgtTjCOUKAo0ih7vYZ3cQgr7x9Rx0K6oZ+0uE0s4LUWZydh8aZa3EIPKOVF1DAc6vA5lk7Y4nyMWV/hAp61B/wmXL4/4KwwMLaT5X4D8d4KpD9EfBqBspDMb00pUu5ZOEe1m00kwXq9Wq/dUexnmY5SJL3YCVvw3BuH0wH6+IFPLg7R5mRgDVVql4hyzOhWEFgAASccF8x2OM/19t6xyqtUKJ/ToHUNxDWKYiIpn5jCIz7Ewn/bUSbY3u2u7MGNMiM+69ELMPWve1X1/FYmkIgAfHc91vq8E8JKw2TzORCJ6h3dRdrtdz+JR5yZOn95ikBA8Y6LazPcNyKgoAhnjPHU3TdM16vV5TqdTrmq9dr8ZGR6DqvV6r/X4nVgsVrtdbqYLCn8CRsP0f5M8KRwAAAABJRU5ErkJggg==">
+
+<style>
+:root {
+  --bg1: #0a1224;
+  --bg2: #0e1830;
+  --gold: #d4af37;
+  --text: #eaeef6;
+  --muted: #a4adc0;
+  --card: rgba(255,255,255,0.03);
+}
+body {
+  background: linear-gradient(180deg,var(--bg1),var(--bg2));
+  color: var(--text);
+  font-family: system-ui,-apple-system,Segoe UI,Roboto;
+  margin:0;padding:0;
+  height:100vh;overflow-x:hidden;
+}
+header {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:10px 14px;
+}
+h1 {color:var(--gold);font-size:20px;margin:0;}
+.btn {
+  background:transparent;
+  border:1px solid rgba(255,255,255,0.1);
+  color:var(--text);
+  border-radius:10px;
+  padding:6px 10px;
+}
+.calendar {
+  display:grid;
+  grid-template-columns:repeat(7,1fr);
+  gap:6px;
+  padding:6px;
+}
+.day {
+  background:var(--card);
+  border-radius:8px;
+  padding:8px;
+  min-height:90px;
+  cursor:pointer;
+}
+.day.header {background:transparent;font-weight:700;text-align:center;color:var(--muted);}
+.date {font-weight:700;}
+.preview {font-size:12px;color:var(--muted);margin-top:4px;}
+</style>
+</head>
+<body>
+<header>
+  <h1>🏰 KING</h1>
+  <button class="btn" id="export">Exportar</button>
+</header>
+<div class="calendar" id="calendar"></div>
+<script>
+
+// gerar cabeçalhos do calendário
+const calendar = document.getElementById("calendar");
+const nomesDias = ["Dom","Seg","Ter","Qua","Qui","Sex","Sáb"];
+for (let i=0;i<7;i++){
+  const h=document.createElement("div");
+  h.className="day header";
+  h.textContent=nomesDias[i];
+  calendar.appendChild(h);
+}
+
+// gerar dias de novembro 2025
+const folgas=[4,9,18,23,24];
+const mes=10, ano=2025;
+const primeiroDia=new Date(ano,mes,1);
+const inicio=primeiroDia.getDay();
+for(let i=0;i<inicio;i++){
+  const v=document.createElement("div");
+  v.className="day";
+  v.style.visibility="hidden";
+  calendar.appendChild(v);
+}
+
+for(let d=1; d<=30; d++){
+  const dia=document.createElement("div");
+  dia.className="day";
+  const data=document.createElement("div");
+  data.className="date";
+  data.textContent=d + " / Nov";
+  dia.appendChild(data);
+  const frase=["Cogito, ergo sum.","Wer ein Warum zum Leben hat...","L'imagination est plus importante...","Divide et impera.","Le cœur a ses raisons...","Tempus fugit."][d%6];
+  const prev=document.createElement("div");
+  prev.className="preview";
+  prev.textContent=frase;
+  dia.appendChild(prev);
+  if(folgas.includes(d)){
+    const f=document.createElement("div");
+    f.textContent="FOLGA";
+    f.style.position="absolute";
+    f.style.top="4px";
+    f.style.left="6px";
+    f.style.background="#FFD973";
+    f.style.color="#000";
+    f.style.fontSize="10px";
+    f.style.padding="2px 5px";
+    f.style.borderRadius="4px";
+    dia.appendChild(f);
+  }
+  dia.onclick=()=>abrirDia(d);
+  calendar.appendChild(dia);
+}
+
+// estrutura modal
+const modal=document.createElement("div");
+modal.style.position="fixed";
+modal.style.left=0;
+modal.style.top=0;
+modal.style.width="100%";
+modal.style.height="100%";
+modal.style.background="rgba(0,0,0,0.6)";
+modal.style.display="none";
+modal.style.alignItems="center";
+modal.style.justifyContent="center";
+modal.style.zIndex=99;
+modal.innerHTML=`
+  <div style="background:linear-gradient(180deg,#0f1a33,#0a1224);padding:14px;border-radius:10px;width:94%;max-width:900px;max-height:90%;overflow:auto;">
+    <div style="display:flex;justify-content:space-between;align-items:center;">
+      <div><h2 id='tituloDia' style='color:#d4af37;margin:0;font-size:18px'></h2><p id='fraseDia' style='color:#a4adc0;font-size:13px'></p></div>
+      <button class='btn' id='fecharModal'>Fechar</button>
+    </div>
+    <hr style="border:0;border-top:1px solid rgba(255,255,255,0.1)">
+    <div id='conteudoDia' style='font-size:14px;line-height:1.5'></div>
+  </div>`;
+document.body.appendChild(modal);
+
+document.getElementById("fecharModal").onclick=()=>modal.style.display="none";
+
+function abrirDia(d){
+  const frases=[
+    "Cogito, ergo sum. — Descartes",
+    "Wer ein Warum zum Leben hat, erträgt fast jedes Wie. — Nietzsche",
+    "L'imagination est plus importante que la connaissance. — Einstein",
+    "Divide et impera. — César",
+    "Le cœur a ses raisons que la raison ne connaît point. — Pascal",
+    "Tempus fugit. — Virgílio"
+  ];
+  document.getElementById("tituloDia").textContent=`Dia ${d} de Novembro de 2025`;
+  document.getElementById("fraseDia").textContent=frases[d%6];
+  const c=document.getElementById("conteudoDia");
+  c.innerHTML=`
+  <p><strong>🏢 Trabalho:</strong> ${folgas.includes(d)?'Folga':'Ver escala adaptativa'}</p>
+  <p><strong>🍽️ Alimentação:</strong> Café, Almoço, Lanche, Jantar, Pós-treino (automático)</p>
+  <p><strong>🏋️ Treino:</strong> Intensidade calculada — ${folgas.includes(d)?'Leve (descanso)':'Normal/Pesado conforme energia'}</p>
+  <p><strong>💰 Gastos:</strong> Editável — R$ 0,00</p>
+  <p><strong>🏠 Tarefas de casa:</strong> Varrer, limpar, organizar</p>
+  <p><strong>💤 Sono:</strong> Calculado automaticamente</p>
+  `;
+  modal.style.display="flex";
+}
+
+// armazenamento local
+function salvarDados(dia, dados){
+  localStorage.setItem("KING_DIA_"+dia, JSON.stringify(dados));
+}
+function carregarDados(dia){
+  const d=localStorage.getItem("KING_DIA_"+dia);
+  return d?JSON.parse(d):{};
+}
+
+// exemplo básico de cálculo adaptativo
+function calcularEnergia(d){
+  let energia=5;
+  if([4,9,18,23,24].includes(d-1)) energia+=2;
+  if(d%6===0) energia-=2;
+  if(energia>9) energia=9;
+  if(energia<0) energia=0;
+  if(energia>=6) return {nivel:"Alta",texto:"Treino pesado"};
+  if(energia>=3) return {nivel:"Média",texto:"Treino normal"};
+  return {nivel:"Baixa",texto:"Treino leve"};
+}
+
+// reforço visual
+const estiloExtra=document.createElement("style");
+estiloExtra.textContent=`
+  .energy-pill{
+    display:inline-block;
+    padding:4px 10px;
+    border-radius:999px;
+    font-size:12px;
+    font-weight:700;
+  }
+  .alta{background:linear-gradient(90deg,#6ef0a3,#3ac37a);color:#071f15;}
+  .media{background:linear-gradient(90deg,#ffd08a,#ffb86b);color:#3f2800;}
+  .baixa{background:linear-gradient(90deg,#ff9b9b,#ff6b6b);color:#330000;}
+`;
+document.head.appendChild(estiloExtra);
+
+// exportar JSON
+document.getElementById("export").onclick=()=>{
+  const tudo={};
+  for(let i=1;i<=30;i++){
+    const d=localStorage.getItem("KING_DIA_"+i);
+    if(d) tudo[i]=JSON.parse(d);
+  }
+  const blob=new Blob([JSON.stringify(tudo,null,2)],{type:"application/json"});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement("a");
+  a.href=url;a.download="KING_Backup.json";
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  URL.revokeObjectURL(url);
+};
+
+// inicialização de resumo semanal
+function resumo(){
+  let treino=0;let sono=0;let diasSono=0;
+  for(let i=1;i<=30;i++){
+    const d=carregarDados(i);
+    if(d.treino) treino++;
+    if(d.sonoHoras){sono+=d.sonoHoras;diasSono++;}
+  }
+  const mediaSono=diasSono?(sono/diasSono).toFixed(1):'-';
+  console.log("Resumo: Treinos:",treino,"Sono médio:",mediaSono);
+}
+resumo();
+
+// registro de service worker para modo offline
+if('serviceWorker' in navigator){
+  const swBlob=new Blob([`
+    self.addEventListener('install',e=>{e.waitUntil(caches.open('king-cache-v1').then(c=>c.addAll(['./'])))}); 
+    self.addEventListener('fetch',e=>{e.respondWith(caches.match(e.request).then(r=>r||fetch(e.request)))});
+  `],{type:'text/javascript'});
+  const swURL=URL.createObjectURL(swBlob);
+  navigator.serviceWorker.register(swURL);
+}
+
+</script>
+</body>
+</html>
