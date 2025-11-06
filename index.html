@@ -3,83 +3,80 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>KING — v5.7 Nutrição & Calendário</title>
+<title>KING — v5.7.1 — Calendário Vivo</title>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
 <meta name="theme-color" content="#0a0a0a">
 <style>
 :root{
-  --bg:#0a0a0a; --card:#0f1112; --text:#f8f8f8; --muted:#c0c0c0;
-  --gold:#d4af37; --red:#8b0000; --silver:#bfc7cc; --glass:rgba(255,255,255,0.03);
+  --bg:#070707; --panel:#0f1112; --muted:#bfc7cc; --text:#f5f5f5;
+  --gold:#d4af37; --red:#8b0000; --silver:#c6cbd0; --glass:rgba(255,255,255,0.03);
+  --accent:#2b2b2b;
 }
 *{box-sizing:border-box}
 html,body{height:100%;margin:0;background:var(--bg);color:var(--text);font-family:'Poppins',sans-serif;-webkit-font-smoothing:antialiased}
-.app{max-width:1120px;margin:8px auto;padding:12px}
-.header{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+.app{display:flex;flex-direction:column;min-height:100vh}
+
+/* TOP HEADER */
+.header{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-bottom:1px solid rgba(255,255,255,0.03);background:linear-gradient(180deg, rgba(255,255,255,0.01), transparent)}
 .brand{display:flex;flex-direction:column}
-.title{font-size:20px;font-weight:700;letter-spacing:0.6px}
-.subtitle{color:var(--muted);font-size:13px;margin-top:6px}
-.controls{display:flex;gap:8px;align-items:center}
-.btn{background:transparent;border:1px solid rgba(255,255,255,0.06);padding:8px 12px;border-radius:10px;color:var(--text);cursor:pointer}
-.btn.primary{background:linear-gradient(90deg,var(--gold),#ffd66b);color:#0a0a0a;font-weight:700;border:0}
+.title{font-size:18px;font-weight:700}
+.subtitle{font-size:12px;color:var(--muted);margin-top:4px}
+.top-controls{display:flex;gap:8px;align-items:center}
+.btn{background:transparent;border:1px solid rgba(255,255,255,0.05);padding:8px 10px;border-radius:10px;color:var(--text);cursor:pointer;font-size:13px}
+.btn.primary{background:linear-gradient(90deg,var(--gold),#ffd66b);color:#080808;border:0;}
 
-/* monthly progress (thin) */
-.monthly-wrap{position:relative;margin-top:12px}
-.monthly-bar{height:6px;background:rgba(255,255,255,0.02);border-radius:6px;backdrop-filter:blur(4px);border:1px solid rgba(255,255,255,0.03)}
-.monthly-fill{height:100%;width:0;background:linear-gradient(90deg,var(--gold),#ffd66b);border-radius:6px;box-shadow:0 6px 20px rgba(212,175,55,0.12);transition:width .9s ease}
-.monthly-label{font-size:12px;color:var(--muted);margin-top:6px}
+/* monthly progress - thin */
+.monthly-area{padding:10px 16px}
+.monthly-bar{height:6px;background:rgba(255,255,255,0.02);border-radius:8px;border:1px solid rgba(255,255,255,0.03);overflow:hidden}
+.monthly-fill{height:100%;width:0;background:linear-gradient(90deg,var(--gold),#ffd66b);transition:width .6s ease}
 
-/* layout */
-.main{display:grid;grid-template-columns:1fr 380px;gap:18px;margin-top:14px}
-@media(max-width:980px){ .main{grid-template-columns:1fr;}}
-.left{background:linear-gradient(180deg, rgba(255,255,255,0.01), transparent);border-radius:12px;padding:12px;border:1px solid rgba(255,255,255,0.03)}
-.right{display:flex;flex-direction:column;gap:12px}
-.card{background:linear-gradient(180deg,#0f1112,#0b0b0b);padding:12px;border-radius:12px;border:1px solid rgba(255,255,255,0.04)}
-
-/* calendar */
-.weekhead{display:grid;grid-template-columns:repeat(7,1fr);gap:8px}
-.weekcell{font-weight:700;text-align:center;color:var(--muted);font-size:12px}
-.grid{display:grid;grid-template-columns:repeat(7,1fr);gap:10px;margin-top:10px}
-.cell{background:linear-gradient(180deg,rgba(255,255,255,0.02),transparent);min-height:96px;border-radius:10px;padding:10px;border:1px solid rgba(255,255,255,0.03);position:relative;cursor:pointer;display:flex;flex-direction:column;justify-content:flex-start}
+/* MAIN - calendar full */
+.main{flex:1;display:flex;align-items:stretch;justify-content:center;padding:14px}
+.calendar-wrap{width:100%;max-width:1200px}
+.weekhead{display:grid;grid-template-columns:repeat(7,1fr);gap:10px}
+.weekcell{font-weight:700;text-align:center;color:var(--muted);font-size:13px;padding:6px}
+.grid{display:grid;grid-template-columns:repeat(7,1fr);gap:12px;margin-top:12px}
+.cell{background:linear-gradient(180deg, rgba(255,255,255,0.015), transparent);min-height:110px;border-radius:12px;padding:12px;border:1px solid rgba(255,255,255,0.03);position:relative;cursor:pointer;display:flex;flex-direction:column;align-items:flex-start;justify-content:flex-start;transition:transform .12s, box-shadow .12s}
+.cell:hover{transform:translateY(-4px);box-shadow:0 16px 40px rgba(0,0,0,0.6)}
 .daynum{font-weight:700;font-size:16px}
-.preview{font-size:12px;color:var(--muted);margin-top:6px}
-.cell.today{box-shadow:0 10px 30px rgba(212,175,55,0.06);outline:3px solid rgba(212,175,55,0.06)}
-.cell.folga{background: linear-gradient(180deg, rgba(139,0,0,0.05), rgba(212,175,55,0.02));border:1px solid rgba(139,0,0,0.12)}
-.cell.past{opacity:0.5;filter:grayscale(.08)}
-.badge{position:absolute;right:8px;top:8px;background:rgba(0,0,0,0.35);padding:4px 8px;border-radius:8px;border:1px solid rgba(255,255,255,0.03);font-size:12px;color:var(--muted);}
+.preview{font-size:13px;color:var(--muted);margin-top:8px}
+.cell.today{outline:3px solid rgba(212,175,55,0.08);box-shadow:0 12px 30px rgba(212,175,55,0.06)}
+.cell.folga{background:linear-gradient(180deg, rgba(139,0,0,0.03), rgba(212,175,55,0.02));border:1px solid rgba(139,0,0,0.10)}
+.cell.past{opacity:0.55;filter:grayscale(.06)}
+.cell .tag-folga{position:absolute;right:8px;bottom:8px;background:rgba(0,0,0,0.35);padding:4px 8px;border-radius:8px;font-size:12px;color:var(--muted);border:1px solid rgba(255,255,255,0.03)}
 
-/* right column */
-.pizza-row{display:flex;gap:12px;align-items:center}
-.pizza{width:180px;height:180px;border-radius:8px}
+/* BOTTOM BAR (taskbar) */
+.bottom-bar{position:fixed;left:12px;right:12px;bottom:12px;height:80px;background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.008));border-radius:18px;display:flex;align-items:center;justify-content:space-between;padding:10px 18px;border:1px solid rgba(255,255,255,0.03);box-shadow:0 18px 50px rgba(0,0,0,0.6)}
+.bottom-left, .bottom-right{display:flex;align-items:center;gap:12px}
+.icon-slot{width:48px;height:48px;border-radius:10px;background:transparent;border:1px dashed rgba(255,255,255,0.03);display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:18px}
+.drop-center{position:relative;display:flex;align-items:center;justify-content:center;flex-direction:column}
+.drop-btn{width:68px;height:68px;border-radius:999px;background:linear-gradient(180deg,var(--gold),#ffd66b);display:flex;align-items:center;justify-content:center;box-shadow:0 18px 40px rgba(212,175,55,0.14);font-weight:800;color:#080808;cursor:pointer;border:3px solid rgba(255,255,255,0.06)}
+.drop-note{font-size:12px;color:var(--muted);margin-top:6px}
+
+/* MODALS */
+.modal{position:fixed;left:0;top:0;width:100%;height:100%;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,0.6);z-index:200;padding:16px}
+.panel{width:100%;max-width:960px;background:linear-gradient(180deg,#0b0b0b,#0a0a0a);padding:18px;border-radius:12px;border:1px solid rgba(255,255,255,0.03);box-shadow:0 50px 150px rgba(0,0,0,0.7)}
+.close-x{background:transparent;border:1px solid rgba(255,255,255,0.04);padding:8px 10px;border-radius:10px;color:var(--muted);cursor:pointer}
+
+/* HEALTH PANEL internals */
+.health-grid{display:flex;gap:12px;flex-wrap:wrap}
+.health-left{min-width:220px}
+.pizza{width:220px;height:220px;border-radius:10px;background:transparent}
 .metrics{flex:1}
-.metric{display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px dashed rgba(255,255,255,0.03)}
-.metric strong{font-size:13px}
-.metric .val{font-weight:700;color:var(--gold)}
-.week-bars{margin-top:10px}
-.week-row{display:flex;gap:8px;align-items:flex-end;height:80px}
-.week-col{flex:1;text-align:center}
-.week-bar{width:100%;height:0;background:linear-gradient(180deg,var(--gold),#ffd66b);border-radius:8px;transition:height .6s}
+.metric{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px dashed rgba(255,255,255,0.03)}
+.small{font-size:13px;color:var(--muted)}
 
-/* hydration */
-.hyd-row{display:flex;gap:8px;align-items:center}
-.bottle{width:72px;height:86px;border-radius:8px;border:1px solid rgba(255,255,255,0.03);display:flex;flex-direction:column;align-items:center;justify-content:center}
-.bottle .lvl{font-weight:800;color:var(--gold);font-size:18px}
-.drop{background:transparent;border:1px solid rgba(255,255,255,0.05);padding:8px;border-radius:8px;color:var(--muted);cursor:pointer}
-.small{font-size:12px;color:var(--muted)}
-.action-row{display:flex;justify-content:flex-end;gap:8px;margin-top:12px}
-
-/* bottom drop icon (health) */
-.bottom-bar{position:fixed;left:0;right:0;bottom:16px;height:72px;display:flex;align-items:center;justify-content:center;pointer-events:none}
-.drop-btn{width:64px;height:64px;border-radius:999px;background:linear-gradient(180deg,var(--gold),#ffd66b);display:flex;align-items:center;justify-content:center;box-shadow:0 10px 30px rgba(212,175,55,0.18);font-weight:800;color:#0a0a0a;cursor:pointer;pointer-events:auto;border:3px solid rgba(255,255,255,0.06)}
-.drop-btn .emoji{font-size:24px}
-.drop-note{position:fixed;left:50%;transform:translateX(-50%);bottom:86px;color:var(--muted);font-size:12px;pointer-events:none}
-
-/* modal (health panel) */
-.modal{position:fixed;left:0;top:0;width:100%;height:100%;display:none;align-items:center;justify-content:center;background:linear-gradient(rgba(0,0,0,0.6),rgba(0,0,0,0.6));z-index:90;padding:12px}
-.panel{width:100%;max-width:980px;background:linear-gradient(180deg,#0a0a0a,#0b0b0b);padding:16px;border-radius:12px;border:1px solid rgba(255,255,255,0.04);box-shadow:0 40px 120px rgba(0,0,0,0.6)}
-.close-x{background:transparent;border:1px solid rgba(255,255,255,0.04);padding:6px 10px;border-radius:8px;color:var(--muted);cursor:pointer}
+/* DAY modal */
+.day-list{margin-top:10px}
 
 /* responsive */
-@media(max-width:860px){ .right{order:2} .left{order:1} .drop-note{display:none} }
+@media(max-width:980px){
+  .grid{gap:8px}
+  .cell{min-height:96px;padding:10px}
+  .bottom-bar{left:8px;right:8px}
+  .drop-btn{width:60px;height:60px}
+  .pizza{width:160px;height:160px}
+}
 </style>
 </head>
 <body>
@@ -87,169 +84,140 @@ html,body{height:100%;margin:0;background:var(--bg);color:var(--text);font-famil
   <header class="header">
     <div class="brand">
       <div class="title">🏰 KING</div>
-      <div class="subtitle">v5.7 — Calendário Vivo + Nutrição Completa</div>
+      <div class="subtitle">v5.7.1 — Calendário Vivo</div>
     </div>
-    <div class="controls">
+    <div class="top-controls">
       <button class="btn" id="saveBtn">Salvar</button>
       <button class="btn" id="exportBtn">Exportar</button>
     </div>
   </header>
 
-  <div class="monthly-wrap">
-    <div class="monthly-bar" aria-hidden="true"><div class="monthly-fill" id="monthlyFill"></div></div>
-    <div class="monthly-label">Progresso mensal: <span id="monthlyPct">0%</span></div>
+  <div class="monthly-area">
+    <div class="monthly-bar"><div class="monthly-fill" id="monthlyFill"></div></div>
   </div>
 
   <main class="main">
-    <!-- LEFT: calendar -->
-    <section class="left" id="calendarPanel">
+    <div class="calendar-wrap">
       <div class="weekhead" id="weekHead"></div>
       <div class="grid" id="calendarGrid" role="grid" aria-live="polite"></div>
-    </section>
-
-    <!-- RIGHT: quick info (kept minimal; health opens only via gota) -->
-    <aside class="right">
-      <div class="card">
-        <div style="display:flex;justify-content:space-between;align-items:center">
-          <strong>Resumo Rápido</strong>
-          <div class="small">Meta kcal: <span id="metaK">2606</span></div>
-        </div>
-        <div style="margin-top:12px" class="small">Abra o painel completo tocando na gota dourada abaixo.</div>
-        <div style="margin-top:12px">
-          <div class="small">Hidratação hoje</div>
-          <div style="display:flex;gap:10px;align-items:center;margin-top:8px">
-            <div class="bottle center" id="bottleA_small"><div class="lvl" id="lvlA_small">0/4</div><div class="small">Garrafa A</div></div>
-            <div class="bottle center" id="bottleB_small"><div class="lvl" id="lvlB_small">0/4</div><div class="small">Garrafa B</div></div>
-            <div style="flex:1"><div class="small">Total: <span id="totSmall">0</span> ml</div></div>
-          </div>
-        </div>
-      </div>
-
-      <div class="card">
-        <div style="display:flex;justify-content:space-between;align-items:center">
-          <strong>BAÚ (mini)</strong>
-          <div class="small">Itens: <span id="bauCountMini">0</span></div>
-        </div>
-        <div style="margin-top:8px" id="bauMiniList" class="small"></div>
-      </div>
-    </aside>
+    </div>
   </main>
 
-  <div style="height:90px"></div>
+  <!-- bottom taskbar -->
+  <div class="bottom-bar" role="navigation" aria-label="Barra de tarefas">
+    <div class="bottom-left">
+      <div class="icon-slot" id="slot-left-1">🏠</div>
+      <div class="icon-slot" id="slot-left-2">📅</div>
+    </div>
+    <div class="drop-center" style="pointer-events:none">
+      <div style="pointer-events:auto">
+        <button id="openHealth" class="drop-btn" title="Abrir Painel de Saúde">💧</button>
+      </div>
+      <div class="drop-note">Painel de Saúde</div>
+    </div>
+    <div class="bottom-right">
+      <div class="icon-slot" id="slot-right-1">📦</div>
+      <div class="icon-slot" id="slot-right-2">⚙️</div>
+    </div>
+  </div>
 </div>
 
-<!-- bottom drop (open health panel) -->
-<div class="bottom-bar">
-  <div class="drop-note">Painel de Saúde</div>
-  <button id="openHealth" class="drop-btn" title="Abrir Painel de Saúde">
-    <div class="emoji">💧</div>
-  </button>
-</div>
-
-<!-- HEALTH PANEL modal (opens on drop click) -->
+<!-- HEALTH modal -->
 <div class="modal" id="healthModal" aria-hidden="true">
-  <div class="panel">
+  <div class="panel" role="dialog" aria-modal="true" aria-labelledby="healthTitle">
     <div style="display:flex;justify-content:space-between;align-items:center">
       <div>
-        <h2 style="margin:0">💧 Painel de Saúde</h2>
+        <h2 id="healthTitle" style="margin:0">💧 Painel de Saúde</h2>
         <div class="small" id="healthDate"></div>
       </div>
-      <div style="display:flex;gap:8px">
-        <button class="close-x" id="closeHealth">Fechar</button>
-      </div>
+      <div><button class="close-x" id="closeHealth">Fechar</button></div>
     </div>
 
-    <div style="margin-top:12px;display:flex;gap:12px;flex-wrap:wrap">
-      <!-- left: pizza + data -->
-      <div style="min-width:220px;">
+    <div style="margin-top:12px" class="health-grid">
+      <div class="health-left">
         <canvas id="pizzaCanvas" class="pizza" aria-hidden="true"></canvas>
-        <div style="margin-top:8px" class="small">Equilíbrio diário: <span id="equilPct">0%</span></div>
+        <div class="small" style="margin-top:8px">Equilíbrio: <strong id="equilPct">0%</strong></div>
       </div>
+      <div class="metrics">
+        <div class="card" style="background:transparent;padding:0;border-radius:8px">
+          <div class="metric"><div class="small">Água</div><div id="aguaNow" class="small">0 / 2100</div></div>
+          <div class="metric"><div class="small">Kcal</div><div id="kcalNow" class="small">0 / 2606</div></div>
+          <div class="metric"><div class="small">Sono</div><div id="sonoNow" class="small">0 / 8h</div></div>
+          <div class="metric"><div class="small">Treino</div><div id="treinoNow" class="small">—</div></div>
+        </div>
 
-      <!-- right: metrics & hydration & meals -->
-      <div style="flex:1;min-width:320px">
-        <div class="card" style="padding:10px;margin-bottom:10px">
-          <div style="display:flex;justify-content:space-between;align-items:center"><strong>Métricas</strong><div class="small">Meta água: <span id="metaWater">2100</span> ml</div></div>
-          <div style="margin-top:10px">
-            <div class="metric"><strong>Água</strong><div class="val" id="aguaNow">0 / 2100</div></div>
-            <div class="metric"><strong>Kcal</strong><div class="val" id="kcalNow">0 / 2606</div></div>
-            <div class="metric"><strong>Sono</strong><div class="val" id="sonoNow">0 / 8h</div></div>
-            <div class="metric"><strong>Treino</strong><div class="val" id="treinoNow">—</div></div>
+        <div style="margin-top:12px" class="card" id="hydrationCard">
+          <div style="display:flex;justify-content:space-between;align-items:center"><strong>Hidratação</strong><div class="small">Toque ¼ por garrafa</div></div>
+          <div style="display:flex;gap:10px;margin-top:10px;align-items:center">
+            <div style="text-align:center"><div id="lvlA_big" style="font-weight:700;color:var(--gold);font-size:18px">0/4</div><div class="small">Garrafa A</div></div>
+            <div style="text-align:center"><div id="lvlB_big" style="font-weight:700;color:var(--gold);font-size:18px">0/4</div><div class="small">Garrafa B</div></div>
+            <div style="margin-left:auto"><button class="btn" id="add25">+25 ml</button><div class="small" style="margin-top:8px">Total: <strong id="totWaterNow">0</strong> ml</div></div>
           </div>
         </div>
 
-        <div class="card" style="padding:10px;margin-bottom:10px">
-          <div style="display:flex;justify-content:space-between;align-items:center"><strong>Hidratação</strong><div class="small">Toque ¼ da garrafa</div></div>
-          <div style="margin-top:8px;display:flex;gap:10px;align-items:center">
-            <div class="bottle center" id="bottleA_big"><div class="lvl" id="lvlA_big">0/4</div><div class="small">Garrafa A</div></div>
-            <div class="bottle center" id="bottleB_big"><div class="lvl" id="lvlB_big">0/4</div><div class="small">Garrafa B</div></div>
-            <div style="display:flex;flex-direction:column;gap:6px">
-              <button class="drop" id="add25">+25 ml</button>
-              <div class="small">Total: <span id="totWaterNow">0</span> ml</div>
-            </div>
-          </div>
-        </div>
-
-        <div class="card" style="padding:10px">
-          <div style="display:flex;justify-content:space-between;align-items:center"><strong>Refeições (sugestão)</strong><div class="small">Toque para confirmar</div></div>
-          <div style="margin-top:10px" id="mealsList"></div>
-          <div class="action-row"><button class="action primary" id="confirmMeals">Confirmar refeições</button></div>
+        <div style="margin-top:12px" class="card" id="mealsCard">
+          <div style="display:flex;justify-content:space-between;align-items:center"><strong>Refeições (sugestões)</strong><div class="small">Confirme ao consumir</div></div>
+          <div id="mealsList" style="margin-top:8px"></div>
+          <div style="display:flex;justify-content:flex-end;margin-top:10px"><button class="btn primary" id="confirmMeals">Confirmar refeições de hoje</button></div>
         </div>
       </div>
     </div>
 
     <div style="margin-top:12px">
       <strong>Semana</strong>
-      <div class="week-row" id="weekBarsModal" style="margin-top:8px"></div>
+      <div id="weekBarsModal" style="display:flex;gap:8px;align-items:flex-end;height:80px;margin-top:8px"></div>
     </div>
   </div>
 </div>
 
-<!-- DAY modal (open when clicking calendar day) -->
+<!-- DAY modal -->
 <div class="modal" id="dayModal" aria-hidden="true">
   <div class="panel">
     <div style="display:flex;justify-content:space-between;align-items:center">
-      <div><h3 id="dayTitle" style="margin:0">Dia</h3><div class="small" id="daySub"></div></div>
+      <div>
+        <h3 id="dayTitle" style="margin:0">Dia</h3>
+        <div class="small" id="dayDate"></div>
+      </div>
       <div><button class="close-x" id="closeDay">Fechar</button></div>
     </div>
+
     <div style="margin-top:12px">
       <div class="small">🏢 Trabalho</div>
-      <div style="margin-top:6px" id="dayWork" class="small"></div>
+      <div id="dayWork" class="small" style="margin-top:6px"></div>
 
-      <div style="margin-top:12px" class="small">🍽️ Sugestões de alimentação</div>
-      <div style="margin-top:8px" id="dayMeals"></div>
+      <div style="margin-top:12px" class="small">🍽 Sugestões</div>
+      <div id="dayMeals" class="day-list"></div>
 
-      <div style="margin-top:12px" class="action-row">
-        <button class="action primary" id="confirmDayMeals">Confirmar consumo deste dia</button>
-      </div>
+      <div style="display:flex;justify-content:flex-end;margin-top:12px"><button class="btn primary" id="confirmDayMeals">Confirmar consumo</button></div>
     </div>
   </div>
 </div>
 
 <script>
-/* KING v5.7 — consolidated single-file app
-   - Calendar visible by default (left)
-   - Health panel opens by clicking gold drop button (modal)
-   - BAÚ, Hydration, Meals, Shakes integrated
+/* KING v5.7.1 - single file app
+   - Calendar full screen
+   - Bottom taskbar with medium drop (health panel)
+   - Health modal (water, kcal, sono, treino), meals suggestions, BAU initial
    - localStorage persistence
 */
 
-/* ---------- CONFIG & STORAGE KEYS ---------- */
-const STORAGE_PREFIX = 'KING_v57_';
-const KEY_BAU = STORAGE_PREFIX + 'bau';
-const KEY_DAY = STORAGE_PREFIX + 'dayData';
-const KEY_HYD = STORAGE_PREFIX + 'hydration';
-const KEY_HEALTH = STORAGE_PREFIX + 'health';
+/* STORAGE KEYS */
+const PREFIX = 'KING_v571_';
+const KEY_BAU = PREFIX + 'bau';
+const KEY_DAY = PREFIX + 'day';
+const KEY_HYD = PREFIX + 'hyd';
+const KEY_HEALTH = PREFIX + 'health';
 
+/* META */
 const META = { kcal: 2606, agua: 2100, sono: 8 };
 
-/* user's folgas (requested) */
+/* FOLGAS (user-defined) */
 const FOLGAS = new Set([4,9,18,23,24]);
 
-/* ---------- INITIAL BAU (from your list) ---------- */
-const BAU_DEFAULT = [
+/* default BAU (from your list) */
+const DEFAULT_BAU = [
   {nome:'Banana', setor:'Geladeira', qtd:5, un:'un', kcal100:89},
-  {nome:'Anabolic Mass', setor:'Despensa', qtd:1000, un:'g', kcal150:580}, // 150g -> 580kcal
+  {nome:'Anabolic Mass', setor:'Despensa', qtd:1000, un:'g', kcal150:580},
   {nome:'Leite (aberto)', setor:'Geladeira', qtd:500, un:'ml', kcal100:60},
   {nome:'Mel Silvestre', setor:'Despensa', qtd:1250, un:'ml', kcal100:304},
   {nome:'Ovos', setor:'Geladeira', qtd:11, un:'un', kcal100:155},
@@ -257,137 +225,163 @@ const BAU_DEFAULT = [
   {nome:'Arroz cozido (geladeira)', setor:'Geladeira', qtd:500, un:'g', kcal100:130},
   {nome:'Purê de batata (geladeira)', setor:'Geladeira', qtd:500, un:'g', kcal100:90},
   {nome:'Linguiça calabresa', setor:'Geladeira', qtd:2, un:'un', kcal100:300},
-  {nome:'Açúcar refinado', setor:'Despensa', qtd:1000, un:'g', kcal100:387}
+  {nome:'Açúcar', setor:'Despensa', qtd:1000, un:'g', kcal100:387}
 ];
 
-/* ---------- load / init ---------- */
-function loadJSON(k, fallback){ try{ const s=localStorage.getItem(k); return s?JSON.parse(s):fallback; }catch(e){return fallback;} }
-function saveJSON(k,v){ localStorage.setItem(k, JSON.stringify(v)); }
+/* load / init */
+function load(k, fallback){ try{ const s=localStorage.getItem(k); return s?JSON.parse(s):fallback; }catch(e){return fallback;} }
+function save(k,v){ localStorage.setItem(k, JSON.stringify(v)); }
 
-let bau = loadJSON(KEY_BAU, BAU_DEFAULT.slice());
-let dayData = loadJSON(KEY_DAY, {}); // keyed by YYYY-MM-DD
-let hydration = loadJSON(KEY_HYD, {bottles:[0,0], extra:0});
-let health = loadJSON(KEY_HEALTH, {});
+let bau = load(KEY_BAU, DEFAULT_BAU.slice());
+let dayData = load(KEY_DAY, {});
+let hyd = load(KEY_HYD, {bottles:[0,0], extra:0});
+let health = load(KEY_HEALTH, {});
 
-/* ---------- DOM refs ---------- */
+/* DOM refs */
 const weekHead = document.getElementById('weekHead');
 const calendarGrid = document.getElementById('calendarGrid');
 const monthlyFill = document.getElementById('monthlyFill');
-const monthlyPct = document.getElementById('monthlyPct');
 
-const lvlA_small = document.getElementById('lvlA_small');
-const lvlB_small = document.getElementById('lvlB_small');
-const totSmall = document.getElementById('totSmall');
-const bauMiniList = document.getElementById('bauMiniList');
-const bauCountMini = document.getElementById('bauCountMini');
-
-const openHealthBtn = document.getElementById('openHealth');
+const openHealth = document.getElementById('openHealth');
 const healthModal = document.getElementById('healthModal');
 const closeHealth = document.getElementById('closeHealth');
-
 const pizzaCanvas = document.getElementById('pizzaCanvas');
 const aguaNow = document.getElementById('aguaNow');
 const kcalNow = document.getElementById('kcalNow');
 const sonoNow = document.getElementById('sonoNow');
 const treinoNow = document.getElementById('treinoNow');
 const equilPct = document.getElementById('equilPct');
-const totWaterNow = document.getElementById('totWaterNow');
 const lvlA_big = document.getElementById('lvlA_big');
 const lvlB_big = document.getElementById('lvlB_big');
-
+const totWaterNow = document.getElementById('totWaterNow');
+const add25 = document.getElementById('add25');
 const mealsList = document.getElementById('mealsList');
-const confirmMealsBtn = document.getElementById('confirmMeals');
-
+const confirmMeals = document.getElementById('confirmMeals');
 const weekBarsModal = document.getElementById('weekBarsModal');
 
 const dayModal = document.getElementById('dayModal');
 const dayTitle = document.getElementById('dayTitle');
-const daySub = document.getElementById('daySub');
+const dayDate = document.getElementById('dayDate');
 const dayWork = document.getElementById('dayWork');
 const dayMeals = document.getElementById('dayMeals');
-const confirmDayMealsBtn = document.getElementById('confirmDayMeals');
-const closeDayBtn = document.getElementById('closeDay');
+const confirmDayMeals = document.getElementById('confirmDayMeals');
+const closeDay = document.getElementById('closeDay');
 
-/* hydration mini controls */
-const bottleA_small = document.getElementById('bottleA_small');
-const bottleB_small = document.getElementById('bottleB_small');
-const bottleA_big = document.getElementById('bottleA_big');
-const bottleB_big = document.getElementById('bottleB_big');
-const add25Btn = document.getElementById('add25');
-
-/* export/save */
-document.getElementById('saveBtn').onclick = ()=> { saveAll(); alert('Salvo localmente.'); };
+document.getElementById('saveBtn').onclick = ()=> { persistAll(); alert('Salvo localmente'); };
 document.getElementById('exportBtn').onclick = ()=> exportBackup();
 
-/* ---------- helper date funcs ---------- */
+/* week header */
+const names = ['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];
+for(let i=0;i<7;i++){ const el=document.createElement('div'); el.className='weekcell'; el.innerText = names[i]; weekHead.appendChild(el); }
+
+/* helpers */
 function dateKey(y,m,d){ return `${y}-${String(m).padStart(2,'0')}-${String(d).padStart(2,'0')}`; }
 function todayKey(){ const n=new Date(); return dateKey(n.getFullYear(), n.getMonth()+1, n.getDate()); }
-function readableDateFromKey(k){ const p=k.split('-'); return new Date(p[0], parseInt(p[1],10)-1, p[2]).toLocaleDateString(); }
+function readable(key){ const p=key.split('-'); return new Date(p[0], parseInt(p[1],10)-1, p[2]).toLocaleDateString(); }
 
-/* ---------- render week header ---------- */
-const weekNames = ['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];
-for(let i=0;i<7;i++){ const el=document.createElement('div'); el.className='weekcell'; el.textContent = weekNames[i]; weekHead.appendChild(el); }
-
-/* ---------- render calendar (current month) ---------- */
+/* render calendar (month) */
 function renderCalendar(){
   calendarGrid.innerHTML = '';
-  const now = new Date();
-  const year = now.getFullYear();
-  const month = now.getMonth(); // 0-index
-  const firstWeekday = new Date(year, month, 1).getDay();
-  const daysInMonth = new Date(year, month+1, 0).getDate();
-  // leading empty
-  for(let i=0;i<firstWeekday;i++){ const e=document.createElement('div'); e.className='cell'; e.style.visibility='hidden'; calendarGrid.appendChild(e); }
-  for(let d=1; d<=daysInMonth; d++){
+  const now = new Date(); const Y=now.getFullYear(); const M=now.getMonth();
+  const firstWeek = new Date(Y,M,1).getDay(); const days = new Date(Y,M+1,0).getDate();
+  for(let i=0;i<firstWeek;i++){ const e=document.createElement('div'); e.className='cell'; e.style.visibility='hidden'; calendarGrid.appendChild(e); }
+  for(let d=1; d<=days; d++){
     const c = document.createElement('div'); c.className='cell';
     const dn = document.createElement('div'); dn.className='daynum'; dn.innerText = d; c.appendChild(dn);
-    const key = dateKey(year, month+1, d);
+    const key = dateKey(Y,M+1,d);
     const saved = dayData[key] || {};
     const pv = document.createElement('div'); pv.className='preview';
     if(saved.foodShort) pv.innerText = '🍽 ' + saved.foodShort;
-    else pv.innerText = (saved.plannedShakes? '🥤 Shake (planejado)' : '');
+    else if(saved.plannedShakes) pv.innerText = '🥤 Shake(s) planejado(s)';
+    else pv.innerText = '';
     c.appendChild(pv);
-    if(FOLGAS.has(d)) c.classList.add('folga');
-    // today highlight
-    const nowD=new Date(); if(d===nowD.getDate() && month===nowD.getMonth() && year===nowD.getFullYear()) c.classList.add('today');
-    if(new Date(year,month,d) < new Date(nowD.getFullYear(), nowD.getMonth(), nowD.getDate())) c.classList.add('past');
-    c.onclick = ()=> openDay(year, month, d, key);
+    if(FOLGAS.has(d)) { c.classList.add('folga'); const tag = document.createElement('div'); tag.className='tag-folga'; tag.innerText='Folga'; c.appendChild(tag); }
+    const nowD = new Date();
+    if(d===nowD.getDate() && M===nowD.getMonth() && Y===nowD.getFullYear()) c.classList.add('today');
+    if(new Date(Y,M,d) < new Date(nowD.getFullYear(), nowD.getMonth(), nowD.getDate())) c.classList.add('past');
+    c.onclick = ()=> openDay(Y,M,d, key);
     calendarGrid.appendChild(c);
   }
-  updateMonthlyProgress();
+  updateMonthly();
 }
 
-/* ---------- BAU mini render ---------- */
-function renderBauMini(){
-  bauMiniList.innerHTML = '';
-  bau.slice(0,8).forEach(it=>{
-    const div = document.createElement('div'); div.innerHTML = `<strong>${it.nome}</strong> — <span class="small">${it.qtd}${it.un||''}</span>`;
-    bauMiniList.appendChild(div);
+/* open day modal */
+function openDay(y,m,d,key){
+  dayModal.style.display = 'flex';
+  dayTitle.innerText = `Dia ${d}`;
+  dayDate.innerText = readable(key);
+  dayWork.innerText = getWorkTime(y,m,d);
+  // meals
+  const meals = genMeals(y,m,d);
+  dayMeals.innerHTML=''; meals.forEach(mo=>{
+    const div=document.createElement('div'); div.style.marginBottom='8px';
+    div.innerHTML = `<strong>${mo.time} • ${mo.title}</strong><div class="small" style="margin-top:6px">${mo.items.join(', ')}</div><div class="small" style="margin-top:4px">≈ ${mo.kcal} kcal</div>`;
+    dayMeals.appendChild(div);
   });
-  bauCountMini.innerText = bau.length;
+  // store prepared into dayData for that date if not exist
+  dayData[key] = dayData[key] || {};
+  if(!dayData[key].plannedShakes) {
+    dayData[key].plannedShakes = [{when:'Pré-trabalho',kcal:711,creatina:true,confirmed:false},{when:'Pós-treino',kcal:711,creatina:false,confirmed:false}];
+    save(KEY_DAY, dayData);
+  }
+}
+closeDay.onclick = ()=> dayModal.style.display = 'none';
+confirmDayMeals.onclick = ()=>{
+  const dMatch = dayTitle.innerText.match(/Dia\s+(\d+)/);
+  if(!dMatch) return;
+  const D = parseInt(dMatch[1],10);
+  const now = new Date(); const key = dateKey(now.getFullYear(), now.getMonth()+1, D);
+  const meals = genMeals(now.getFullYear(), now.getMonth(), D);
+  confirmMealsFor(key, meals);
+  alert('Refeições confirmadas para o dia ' + D);
+  dayModal.style.display = 'none';
+};
+
+/* generate meal suggestions */
+function has(item){ return bau.some(b => b.nome.toLowerCase().includes(item.toLowerCase()) && b.qtd>0); }
+function idxOf(item){ return bau.findIndex(b => b.nome.toLowerCase().includes(item.toLowerCase())); }
+
+function genMeals(y,m,d){
+  const meals=[];
+  const br=[]; if(has('Ovo')) br.push('2 ovos'); if(has('Banana')) br.push('1 banana'); if(has('Pão')) br.push('1 pão francês');
+  meals.push({time:'Café', title:'Café da manhã', items: br.length?br:['Café / shake leve'], kcal: br.length?480:240});
+  const lu=[]; if(has('Arroz')) lu.push('150g arroz'); if(has('Purê')) lu.push('200g purê'); if(has('Linguiça')) lu.push('1 linguiça');
+  meals.push({time:'Almoço', title:'Almoço', items: lu.length?lu:['Arroz + proteína'], kcal: lu.length?700:450});
+  const ln=[]; if(has('Granola')) ln.push('30g granola'); if(has('Mel')) ln.push('1 c. mel'); if(has('Anabolic Mass')) ln.push('1 porção leve');
+  meals.push({time:'Lanche', title:'Lanche', items: ln.length?ln:['Fruta / iogurte'], kcal: ln.length?220:120});
+  const jt=[]; if(has('Arroz')) jt.push('150g arroz'); if(has('Ovo')) jt.push('2 ovos');
+  meals.push({time:'Jantar', title:'Jantar', items: jt.length?jt:['Refeição leve'], kcal: jt.length?520:320});
+  meals.push({time:'Pós-treino', title:'Shake completo', items:['75g Anabolic Mass','1 banana','300ml leite','1 c. mel','1 c. açúcar'], kcal:711});
+  return meals;
 }
 
-/* ---------- HYDRATION controls ---------- */
-function updateHydUIAll(){
-  // small
-  lvlA_small.innerText = hydration.bottles[0] + '/4';
-  lvlB_small.innerText = hydration.bottles[1] + '/4';
-  const total = hydration.bottles[0]*125 + hydration.bottles[1]*125 + (hydration.extra||0);
-  totSmall.innerText = total;
-  document.getElementById('totWater').innerText = total;
-  // big
-  lvlA_big.innerText = hydration.bottles[0] + '/4';
-  lvlB_big.innerText = hydration.bottles[1] + '/4';
-  totWaterNow.innerText = total;
-  // pizza metrics text (if modal open)
-  aguaNow.innerText = total + ' / ' + META.agua;
-  saveJSON(KEY_HYD, hydration);
-  drawPizza();
+/* confirm meals for date - debits BAU heuristics */
+function confirmMealsFor(key, meals){
+  dayData[key] = dayData[key] || {};
+  let total = dayData[key].kcal || 0;
+  meals.forEach(m=>{
+    total += m.kcal || 0;
+    m.items.forEach(it=>{
+      const s = it.toLowerCase();
+      if(s.includes('ovo')){ const i=idxOf('Ovo'); if(i>=0) bau[i].qtd = Math.max(0, bau[i].qtd - 2); }
+      if(s.includes('banana')){ const i=idxOf('Banana'); if(i>=0) bau[i].qtd = Math.max(0, bau[i].qtd - 1); }
+      if(s.includes('anabolic')){ const i=idxOf('Anabolic Mass'); if(i>=0) bau[i].qtd = Math.max(0, bau[i].qtd - 75); }
+      if(s.includes('leite')){ const i=idxOf('Leite'); if(i>=0) bau[i].qtd = Math.max(0, bau[i].qtd - 300); }
+      if(s.includes('mel')){ const i=idxOf('Mel'); if(i>=0) bau[i].qtd = Math.max(0, bau[i].qtd - 1); }
+      if(s.includes('açúcar')){ const i=idxOf('Açúcar'); if(i>=0) bau[i].qtd = Math.max(0, bau[i].qtd - 10); }
+    });
+  });
+  dayData[key].kcal = total;
+  dayData[key].consumed = true;
+  save(KEY_DAY, dayData);
+  save(KEY_BAU, bau);
+  renderCalendar();
+  updateHealthData();
 }
-function toggleBottle(idx){
-  hydration.bottles[idx] = Math.min(4, (hydration.bottles[idx]||0) + 1);
-  saveJSON(KEY_HYD, hydration); updateHydUIAll(); updateHealthDataForToday();
-}
-function add25(){ hydration.extra = (hydration.extra||0) + 25; saveJSON(KEY_HYD, hydration); updateHydUIAll(); updateHealthDataForToday(); }
 
-bottleA_small.onclick = ()=> toggleBott
+/* hydration logic */
+function updateHydUI(){
+  const total = (hyd.bottles[0]+hyd.bottles[1])*125 + (hyd.extra||0);
+  lvlA_big.innerText = hyd.bottles[0] + '/4';
+  lvlB_big.innerText = hyd.bottles[1] + '/4';
+  totWaterNow.in
