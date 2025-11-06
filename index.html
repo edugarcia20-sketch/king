@@ -4,78 +4,70 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>KING</title>
-<meta name="theme-color" content="#e6f1f8" />
-<link rel="icon" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAABvElEQVRYR+2WwU3DMBBFXxMEUgBC0AQeAaUAB6AAfEoTgI0kHYB1pB0d7blJZDbTeL3nySu/OzM2eknmxwl7EqxUgtTjCOUKAo0ih7vYZ3cQgr7x9Rx0K6oZ+0uE0s4LUWZydh8aZa3EIPKOVF1DAc6vA5lk7Y4nyMWV/hAp61B/wmXL4/4KwwMLaT5X4D8d4KpD9EfBqBspDMb00pUu5ZOEe1m00kwXq9Wq/dUexnmY5SJL3YCVvw3BuH0wH6+IFPLg7R5mRgDVVql4hyzOhWEFgAASccF8x2OM/19t6xyqtUKJ/ToHUNxDWKYiIpn5jCIz7Ewn/bUSbY3u2u7MGNMiM+69ELMPWve1X1/FYmkIgAfHc91vq8E8JKw2TzORCJ6h3dRdrtdz+JR5yZOn95ikBA8Y6LazPcNyKgoAhnjPHU3TdM16vV5TqdTrmq9dr8ZGR6DqvV6r/X4nVgsVrtdbqYLCn8CRsP0f5M8KRwAAAABJRU5ErkJggg==" />
-
+<meta name="theme-color" content="#eaf1f8" />
 <style>
 :root{
-  --bg1: #eaf1f8;   /* azul-aço frio mais claro */
-  --card: #ffffff;  /* caixas claras */
-  --muted: #6b7a90;
-  --gold: #d4af37;
-  --border: rgba(11,24,40,0.06);
-  --shadow: 0 6px 18px rgba(12,24,40,0.06);
-  --text:#082032;
+  --bg1:#eaf1f8; --card:#fff; --muted:#6b7a90; --gold:#d4af37; --text:#082032;
+  --border:rgba(11,24,40,0.06);
 }
 *{box-sizing:border-box}
-html,body{height:100%;margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue";-webkit-font-smoothing:antialiased;background:var(--bg1);color:var(--text)}
-.app{
-  max-width:1100px;margin:0 auto;padding:12px 12px 36px;
-}
+html,body{height:100%;margin:0;font-family:Inter,system-ui,Roboto,Segoe UI; -webkit-font-smoothing:antialiased; background:var(--bg1); color:var(--text)}
+.app{max-width:1100px;margin:0 auto;padding:12px 12px 80px;position:relative}
 header.apphead{display:flex;align-items:flex-start;gap:12px;justify-content:space-between}
 .brand{display:flex;flex-direction:column;gap:6px}
 .titlewrap{display:flex;align-items:center;gap:12px}
-h1{margin:0;font-size:20px;color:var(--text);font-weight:800;letter-spacing:0.2px}
+h1{margin:0;font-size:20px;color:var(--text);font-weight:800}
 .brand-sub{color:var(--muted);font-size:13px;margin-top:2px}
 .header-controls{display:flex;gap:8px;align-items:center}
-.btn{background:transparent;border:1px solid var(--border);padding:8px 10px;border-radius:10px;font-weight:700;color:var(--text);box-shadow:var(--shadow)}
-.btn.primary{background:linear-gradient(180deg,#fff,#f6f9fc);border:1px solid rgba(0,0,0,0.03)}
+.btn{background:transparent;border:1px solid var(--border);padding:8px 10px;border-radius:10px;font-weight:700;color:var(--text);cursor:pointer}
 .legend{font-size:13px;color:var(--muted);display:flex;gap:8px;align-items:center;margin-top:6px}
 
-/* calendar grid */
+/* calendar */
 .calendar-wrap{margin-top:12px;background:transparent;padding:6px;border-radius:12px}
 .weekhead{display:grid;grid-template-columns:repeat(7,1fr);gap:8px;padding:6px 6px 0}
 .weekcell{font-weight:800;text-align:center;color:var(--text);font-size:13px}
 .grid{display:grid;grid-template-columns:repeat(7,1fr);gap:10px;margin-top:10px}
-.cell{
-  background:var(--card);
-  min-height:96px;
-  height:96px;
-  border-radius:12px;
-  border:1px solid var(--border);
-  display:flex;flex-direction:column;justify-content:flex-start;align-items:flex-start;padding:10px;
-  box-shadow:var(--shadow);
-  position:relative;
-  transition:all .28s ease;
-  overflow:hidden;
-}
-.cell .daynum{font-size:18px;font-weight:800;color:var(--text)}
-.cell .preview{font-size:12px;color:var(--muted);margin-top:6px}
+.cell{background:var(--card);min-height:96px;height:96px;border-radius:12px;border:1px solid var(--border);display:flex;flex-direction:column;justify-content:flex-start;align-items:flex-start;padding:10px;box-shadow:0 6px 18px rgba(12,24,40,0.06);position:relative;transition:all .28s ease;overflow:hidden}
+.daynum{font-size:18px;font-weight:800;color:var(--text)}
+.preview{font-size:12px;color:var(--muted);margin-top:6px}
 .cell.past{opacity:0.36;filter:grayscale(.12);transform:scale(.996)}
-.cell.folga{background: linear-gradient(180deg, #fff5d6 0%, #fff9d6 100%); border:1px solid rgba(212,175,55,0.25)}
-.cell.today{outline:3px solid rgba(100,160,255,0.25)}
-/* fixed size for uniform grid */
-@media(min-width:900px){ .cell{min-height:112px;height:112px} }
+.cell.folga{background: linear-gradient(180deg,#fff5d6 0%,#fff9e6 100%); border:1px solid rgba(212,175,55,0.25); box-shadow:inset 0 0 6px rgba(212,175,55,0.18)}
+.cell.today{outline:3px solid rgba(100,160,255,0.20)}
+/* bottom nav */
+.bottom-nav{position:fixed;left:0;right:0;bottom:0;height:70px;background:linear-gradient(180deg,#f7fbff,#eef6fb);display:flex;align-items:center;justify-content:center;box-shadow:0 -8px 30px rgba(8,20,34,0.06)}
+.nav-inner{max-width:1100px;width:100%;display:flex;gap:10px;padding:8px 12px;align-items:center;justify-content:space-between}
+.nav-btn{flex:1;text-align:center;padding:8px;border-radius:14px;cursor:pointer;font-weight:800;color:var(--muted)}
+.nav-btn.active{background:rgba(212,175,55,0.08);color:var(--gold);box-shadow:0 6px 18px rgba(12,24,40,0.04)}
+/* monthly progress bar (thin) */
+.monthly-bar{position:fixed;left:0;right:0;bottom:70px;height:4px;background:rgba(0,0,0,0.03)}
+.monthly-progress{height:100%;width:0%;background:linear-gradient(90deg,var(--gold),#ffd66b);transition:width .8s ease}
 
-/* footer of header: folga legend below title */
-.folga-legend{display:flex;flex-direction:row;gap:10px;align-items:center;margin-left:2px}
-.folga-pill{background:rgba(212,175,55,0.12);color:#463409;padding:6px 8px;border-radius:999px;font-weight:700;font-size:13px}
-
-/* modal styling */
+/* modal */
 .modal{position:fixed;left:0;top:0;width:100%;height:100%;display:none;align-items:center;justify-content:center;background:rgba(4,8,16,0.45);z-index:60;padding:12px}
 .panel{width:100%;max-width:920px;background:#fff;border-radius:12px;padding:14px;color:#0b2236;box-shadow:0 20px 60px rgba(4,8,16,0.15)}
-.panel h2{margin:0 0 8px 0;color:#04223a}
 .field{margin-bottom:8px}
 .field label{display:block;font-size:13px;color:#324a5f;margin-bottom:6px}
 input[type=text],textarea,select{width:100%;padding:10px;border:1px solid rgba(6,20,30,0.06);border-radius:8px;background:#fbfdff;color:#072033}
 .save-row{display:flex;gap:8px;justify-content:flex-end;margin-top:8px}
 
-/* small screens adjustments */
-@media(max-width:560px){
-  .app{padding:10px}
-  .cell{min-height:86px;height:86px;padding:8px}
-  .weekcell{font-size:12px}
-  .titlewrap h1{font-size:18px}
+/* BAU list */
+.bau-list{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;max-height:360px;overflow:auto;padding:6px}
+.bau-item{background:#fff;border-radius:8px;padding:8px;border:1px solid var(--border);display:flex;flex-direction:column;gap:6px}
+.small{font-size:12px;color:var(--muted)}
+/* Health panel */
+.health-panel{padding:12px;background:linear-gradient(180deg,#ffffff,#f6fbff);border-radius:12px;border:1px solid var(--border);box-shadow:0 10px 30px rgba(12,24,40,0.04);margin-top:10px}
+.pizza-wrap{display:flex;gap:12px;align-items:center;justify-content:center;flex-wrap:wrap}
+.pizza-canvas{width:220px;height:220px}
+.week-chart{margin-top:12px}
+.bar{height:12px;border-radius:8px;background:#eef6fb;overflow:hidden;margin:6px 0;position:relative}
+.bar > i{position:absolute;left:0;top:0;height:100%;width:0;background:linear-gradient(90deg,#9dd3ff,#4da3ff);transition:width .6s ease}
+.week-label{display:flex;justify-content:space-between;font-size:12px;color:var(--muted)}
+/* responsiveness */
+@media(max-width:760px){
+  .bau-list{grid-template-columns:repeat(1,1fr)}
+  .pizza-canvas{width:160px;height:160px}
+  .grid{gap:8px}
+  .cell{height:84px}
 }
 </style>
 </head>
@@ -86,7 +78,7 @@ input[type=text],textarea,select{width:100%;padding:10px;border:1px solid rgba(6
       <div class="titlewrap">
         <h1>🏰 KING</h1>
         <div style="display:flex;flex-direction:column;">
-          <div class="legend" id="folgaLegend"><span style="font-weight:700;color:#5a6b86">Folga:</span> <span class="folga-pill" id="nextFolgaLabel">—</span></div>
+          <div class="legend" id="folgaLegend"><span style="font-weight:700;color:#5a6b86">Próx. folga:</span> <span class="small" id="nextFolgaLabel">—</span></div>
         </div>
       </div>
       <div class="brand-sub" id="subInfo">Calendário inteligente — sincronize para atualizar</div>
@@ -98,231 +90,618 @@ input[type=text],textarea,select{width:100%;padding:10px;border:1px solid rgba(6
     </div>
   </header>
 
+  <div class="monthly-bar"><div class="monthly-progress" id="monthlyProgress"></div></div>
+
   <div class="calendar-wrap" aria-live="polite">
     <div class="weekhead" id="weekhead"></div>
     <div class="grid" id="grid"></div>
   </div>
+
+  <!-- Health panel (hidden by default, toggled by nav) -->
+  <div id="healthSection" style="display:none">
+    <div class="health-panel">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <div>
+          <strong>Painel de Saúde — <span id="todayLabel"></span></strong>
+          <div class="small" id="healthMsg">Carregando...</div>
+        </div>
+        <div style="text-align:right">
+          <div class="small">Meta kcal: <span id="metaKcal">-</span></div>
+          <div class="small">Meta água: <span id="metaAgua">-</span></div>
+        </div>
+      </div>
+
+      <div class="pizza-wrap" style="margin-top:12px;justify-content:space-around">
+        <canvas id="pizza" class="pizza-canvas"></canvas>
+        <div style="flex:1;min-width:220px">
+          <div style="margin-bottom:10px"><strong>Equilíbrio do dia</strong></div>
+          <div style="font-size:28px;font-weight:800" id="equilibriumPct">- %</div>
+          <div style="margin-top:12px">
+            <div class="small">Água: <span id="aguaNow">0</span> / <span id="aguaMetaLabel">0</span> ml</div>
+            <div class="small">Kcal: <span id="kcalNow">0</span> / <span id="kcalMetaLabel">0</span></div>
+            <div class="small">Sono: <span id="sonoNow">0</span> / <span id="sonoMetaLabel">8</span> h</div>
+            <div class="small">Treino: <span id="treinoNow">-</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="week-chart" id="weekChart">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <strong>Semana atual</strong>
+          <div class="small" id="weekHint">Toque nas barras para ver detalhes</div>
+        </div>
+        <div id="weekBars" style="margin-top:8px"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- BAÚ Section (hidden by default) -->
+  <div id="bauSection" style="display:none; margin-top:12px">
+    <div style="display:flex;justify-content:space-between;align-items:center">
+      <strong>BAÚ — Inventário</strong>
+      <div class="small">Itens: <span id="bauCount">0</span></div>
+    </div>
+    <div style="margin-top:8px" class="bau-list" id="bauList"></div>
+  </div>
 </div>
 
-<!-- modal -->
+<!-- modal day -->
 <div class="modal" id="modal" aria-hidden="true">
   <div class="panel" role="dialog">
     <div style="display:flex;justify-content:space-between;align-items:center">
-      <h2 id="modalTitle">Dia</h2>
+      <div>
+        <h2 id="modalTitle">Dia</h2>
+        <div class="small" id="modalSub">Detalhes</div>
+      </div>
       <div><button class="btn" id="closeModal">Fechar</button></div>
     </div>
-    <div style="margin-top:8px" id="modalBody"></div>
-    <div class="save-row">
-      <button class="btn" id="modalSave">Salvar</button>
+    <hr>
+    <div id="modalBody"></div>
+    <div class="save-row" style="margin-top:12px"><button class="btn" id="modalSave">Salvar</button></div>
+  </div>
+</div>
+
+<!-- BAU modal -->
+<div class="modal" id="bauModal" aria-hidden="true">
+  <div class="panel">
+    <div style="display:flex;justify-content:space-between;align-items:center">
+      <strong>BAÚ — Gerenciar Itens</strong>
+      <div><button class="btn" id="closeBau">Fechar</button></div>
+    </div>
+    <div style="margin-top:12px">
+      <div style="display:flex;gap:8px">
+        <input id="newName" placeholder="Nome do item" style="flex:1;padding:10px;border-radius:8px;border:1px solid var(--border)"/>
+        <input id="newQty" placeholder="qtd (ex: 500g / 5un)" style="width:140px;padding:10px;border-radius:8px;border:1px solid var(--border)"/>
+        <button class="btn" id="addBau">Adicionar</button>
+      </div>
+      <div style="margin-top:12px" id="bauManageList"></div>
     </div>
   </div>
 </div>
 
+<div class="bottom-nav">
+  <div class="nav-inner">
+    <div class="nav-btn active" data-nav="calendar" id="navCalendar">🗓️ Calendário</div>
+    <div class="nav-btn" data-nav="health" id="navHealth">💧 Saúde</div>
+    <div class="nav-btn" data-nav="bau" id="navBau">🧺 BAÚ</div>
+    <div class="nav-btn" data-nav="panel" id="navPanel">⚙️ Painel</div>
+  </div>
+</div>
+
 <script>
-/* KING v5.3 — Home layout + adaptive calendar behavior
-   Comportamento:
-   - Usa mês atual se online; fallback para Novembro/2025 se offline.
-   - Esmaece dias já passados.
-   - Folgas destacadas (mais claras).
-   - Cabeçalho dos dias em negrito; células mostram apenas número do dia.
-   - Botões Exportar e Salvar.
-*/
+/* KING consolidated v5.5 (partial): calendar, modal, auto-work times, meals, BAU initial, hydration, health panel, monthly progress */
 
-/* ========== Configurações ========= */
-const FALLBACK = { year:2025, month:10 }; // Novembro 2025 (month is 0-based)
-const folgas = new Set([4,9,18,23,24]); // folgas para Novembro
-const storageKey = 'KING_local_days_v1';
+/* ---------- Configs & initial data ---------- */
+const FALLBACK = {year:2025, month:10}; // Nov 2025
+const folgasSet = new Set([4,9,18,23,24]);
+const storagePrefix = 'KING_v55_';
+const dayDataKey = storagePrefix + 'days';
+const bauKey = storagePrefix + 'bau';
+const healthKey = storagePrefix + 'health';
+const meta = {
+  // TDEE computed earlier (BMR 1552 * 1.55 = 2406), +200 => 2606
+  kcalTarget: 2606,
+  aguaTarget: 2100,
+  sonoTarget: 8
+};
 
-/* detect month/year to render:
-   if online -> use local date.
-   if offline -> fallback month/year.
-*/
-function getRenderMonth(){
-  if(navigator.onLine){
-    const today = new Date();
-    return { year: today.getFullYear(), month: today.getMonth() };
-  } else {
-    return { year: FALLBACK.year, month: FALLBACK.month };
-  }
-}
+/* bau initial from your list */
+const bauInitial = [
+  {nome:'Banana', setor:'Geladeira', sub:'Frutas', qtd:5, unidade:'un', kcal100:89},
+  {nome:'Óleo de soja', setor:'Despensa', sub:'Condimentos', qtd:1.25, unidade:'latas', note:'5/4 latas'},
+  {nome:'Mel Silvestre', setor:'Despensa', sub:'Doces', qtd:1250, unidade:'ml'},
+  {nome:'Sal refinado', setor:'Despensa', sub:'Condimentos', qtd:800, unidade:'g'},
+  {nome:'Pão francês', setor:'Despensa', sub:'Pães', qtd:4, unidade:'un'},
+  {nome:'Tapioca Rapi10', setor:'Despensa', sub:'Prontos', qtd:5, unidade:'un'},
+  {nome:'Ovos', setor:'Geladeira', sub:'Laticínios', qtd:11, unidade:'un'},
+  {nome:'Maionese Hellmann', setor:'Despensa', sub:'Embalados', qtd:500, unidade:'g'},
+  {nome:'Granola', setor:'Despensa', sub:'Cereais', qtd:470, unidade:'g'},
+  {nome:'Milho de pipoca', setor:'Despensa', sub:'Grãos', qtd:300, unidade:'g'},
+  {nome:'Achocolatado', setor:'Despensa', sub:'Bebidas', qtd:200, unidade:'g'},
+  {nome:'Alho', setor:'Despensa', sub:'Temperos', qtd:2, unidade:'cabeças'},
+  {nome:'Açúcar', setor:'Despensa', sub:'Condimentos', qtd:1000, unidade:'g'},
+  {nome:'Arroz seco', setor:'Despensa', sub:'Grãos', qtd:1000, unidade:'g'},
+  {nome:'Creme de leite fechado', setor:'Despensa', sub:'Laticínios', qtd:400, unidade:'g'},
+  {nome:'Creme de leite geladeira (aberto)', setor:'Geladeira', sub:'Laticínios', qtd:150, unidade:'g'},
+  {nome:'Leite condensado', setor:'Despensa', sub:'Doces', qtd:395, unidade:'g'},
+  {nome:'Extrato de tomate sachê', setor:'Despensa', sub:'Enlatados', qtd:300, unidade:'g'},
+  {nome:'Sardinha óleo', setor:'Despensa', sub:'Enlatados', qtd:125, unidade:'g'},
+  {nome:'Sardinha limão', setor:'Despensa', sub:'Enlatados', qtd:125, unidade:'g'},
+  {nome:'Atum ralado', setor:'Despensa', sub:'Enlatados', qtd:140, unidade:'g'},
+  {nome:'Baunilha', setor:'Despensa', sub:'Aromas', qtd:25, unidade:'ml'},
+  {nome:'Fermento químico', setor:'Despensa', sub:'Panificação', qtd:60, unidade:'g'},
+  {nome:'Feijão', setor:'Despensa', sub:'Grãos', qtd:500, unidade:'g'},
+  {nome:'Macarrão ninho', setor:'Despensa', sub:'Massas', qtd:200, unidade:'g'},
+  {nome:'Farinha mandioca', setor:'Despensa', sub:'Farinha', qtd:1000, unidade:'g'},
+  {nome:'Leite (fechado)', setor:'Geladeira', sub:'Laticínios', qtd:1000, unidade:'ml'},
+  {nome:'Leite (aberto)', setor:'Geladeira', sub:'Laticínios', qtd:500, unidade:'ml'},
+  {nome:'Purê de batata (geladeira)', setor:'Geladeira', sub:'Prontos', qtd:500, unidade:'g'},
+  {nome:'Arroz cozido (geladeira)', setor:'Geladeira', sub:'Prontos', qtd:500, unidade:'g'},
+  {nome:'Manteiga', setor:'Geladeira', sub:'Laticínios', qtd:400, unidade:'g'},
+  {nome:'Batata temperada cozida', setor:'Geladeira', sub:'Prontos', qtd:300, unidade:'g'},
+  {nome:'Linguiça calabresa', setor:'Geladeira', sub:'Carnes', qtd:2, unidade:'un'}
+];
 
-/* build week header (Dom..Sab) bold */
+/* ---------- Storage helpers ---------- */
+function saveJSON(key,obj){ localStorage.setItem(key, JSON.stringify(obj)); }
+function loadJSON(key, fallback){ try{ const s = localStorage.getItem(key); return s?JSON.parse(s):fallback; }catch(e){return fallback;} }
+
+/* load stored */
+let dayData = loadJSON(dayDataKey, {});
+let bau = loadJSON(bauKey, bauInitial);
+let healthStore = loadJSON(healthKey, {}); // day->object
+
+/* ---------- Calendar rendering ---------- */
 const weekNames = ['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];
 const weekhead = document.getElementById('weekhead');
-weekhead.innerHTML = '';
-for(let i=0;i<7;i++){
-  const d = document.createElement('div'); d.className='weekcell'; d.innerText = weekNames[i];
-  weekhead.appendChild(d);
-}
+for(let i=0;i<7;i++){ const d=document.createElement('div'); d.className='weekcell'; d.textContent=weekNames[i]; weekhead.appendChild(d); }
 
-/* render calendar grid */
 const grid = document.getElementById('grid');
-
-function clearGrid(){ grid.innerHTML=''; }
-
-function saveLocalBackup(obj){
-  try{ localStorage.setItem(storageKey, JSON.stringify(obj)); alert('Salvo localmente.'); }
-  catch(e){ alert('Erro ao salvar local: '+e); }
+function getRenderMonth(){
+  if(navigator.onLine){ const t=new Date(); return {year:t.getFullYear(), month:t.getMonth()}; }
+  return {year:FALLBACK.year, month:FALLBACK.month};
 }
-
-/* load day data from local storage (permanent edits) */
-function loadDayData(){
-  try{
-    const raw = localStorage.getItem(storageKey);
-    return raw? JSON.parse(raw) : {};
-  }catch(e){ return {}; }
-}
-let dayData = loadDayData();
-
-/* compute next folga label */
-function updateFolgaLegend(renderYear, renderMonth){
-  // find next folga (in that month) that is >= today if online, else show first folga
+function updateFolgaLegend(y,m){
   let label='—';
-  const today = new Date();
-  for(const f of Array.from(folgas).sort((a,b)=>a-b)){
-    const dt = new Date(renderYear, renderMonth, f);
+  const today=new Date();
+  for(const f of Array.from(folgasSet).sort((a,b)=>a-b)){
+    const dt = new Date(y,m,f);
     if(navigator.onLine){
       if(dt >= new Date(today.getFullYear(), today.getMonth(), today.getDate())){
         label = f + ' / ' + dt.toLocaleString('pt-BR',{month:'short'});
         break;
       }
-    } else {
-      // offline: show first folga of month
-      label = f + ' / ' + dt.toLocaleString('pt-BR',{month:'short'});
-      break;
-    }
+    } else { label = f + ' / ' + dt.toLocaleString('pt-BR',{month:'short'}); break; }
   }
   document.getElementById('nextFolgaLabel').innerText = label;
 }
 
-/* check if a given date is past relative to current date (today) */
-function isPast(year, month, day){
-  const now = new Date();
-  const todayOnly = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-  const check = new Date(year, month, day);
-  return check < todayOnly;
+function isPast(year,month,day){
+  const now=new Date(); const todayOnly=new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  return new Date(year,month,day) < todayOnly;
 }
 
-/* render function */
+function clearGrid(){ grid.innerHTML=''; }
+
 function renderCalendar(){
-  const { year, month } = getRenderMonth();
+  const {year,month} = getRenderMonth();
   clearGrid();
-  updateFolgaLegend(year, month);
-  const first = new Date(year, month, 1);
-  const lastDay = new Date(year, month+1, 0).getDate();
+  updateFolgaLegend(year,month);
+  const first = new Date(year,month,1); const lastDay = new Date(year,month+1,0).getDate();
   const startWeekday = first.getDay();
-  // fill empty head cells
-  for(let i=0;i<startWeekday;i++){
-    const e = document.createElement('div'); e.className='cell'; e.style.visibility='hidden';
-    grid.appendChild(e);
-  }
+  for(let i=0;i<startWeekday;i++){ const e=document.createElement('div'); e.className='cell'; e.style.visibility='hidden'; grid.appendChild(e); }
   for(let d=1; d<=lastDay; d++){
     const cell = document.createElement('div'); cell.className='cell';
     const num = document.createElement('div'); num.className='daynum'; num.innerText = d;
     const prev = document.createElement('div'); prev.className='preview';
-    // simple preview from saved data if exists
     const key = `${year}-${(month+1).toString().padStart(2,'0')}-${String(d).padStart(2,'0')}`;
     const saved = dayData[key] || {};
     prev.innerText = saved.title || '';
-    cell.appendChild(num);
-    cell.appendChild(prev);
-    // mark folga
-    if(month === FALLBACK.month && year === FALLBACK.year && folgas.has(d)){
-      cell.classList.add('folga');
-    }
-    // mark today
+    cell.appendChild(num); cell.appendChild(prev);
+    if(month===FALLBACK.month && folgasSet.has(d)) cell.classList.add('folga');
     const today = new Date();
-    if(year === today.getFullYear() && month === today.getMonth() && d === today.getDate()){
-      cell.classList.add('today');
-    }
-    // if past -> fade
-    if(isPast(year, month, d)){
-      cell.classList.add('past');
-    }
-    cell.onclick = ()=> openDayModal(year, month, d, key);
+    if(year===today.getFullYear() && month===today.getMonth() && d===today.getDate()) cell.classList.add('today');
+    if(isPast(year,month,d)) cell.classList.add('past');
+    cell.onclick = ()=> openDayModal(year,month,d,key);
     grid.appendChild(cell);
+  }
+  updateMonthlyProgress();
+}
+renderCalendar();
+
+/* ---------- Auto work time logic (1h travel +20min early => 1h20 before entry) ---------- */
+function getDefaultWorkTime(year,month,day){
+  // if folga (November)
+  if(month===FALLBACK.month && folgasSet.has(day)) return 'Folga — sem expediente';
+  const date=new Date(year,month,day); const wd=date.getDay(); // 0=Dom
+  // Using the shifted times computed earlier
+  switch(wd){
+    case 0: return '13:40 → 01:40'; // Domingo
+    case 1: return '12:40 → 23:40'; // Segunda
+    case 2: return '12:40 → 23:40'; // Terça
+    case 3: return '16:40 → 02:40'; // Quarta
+    case 4: return '17:40 → 03:40'; // Quinta
+    case 5: return '17:40 → 03:40'; // Sexta
+    case 6: return '17:40 → 03:40'; // Sábado
+    default: return '';
   }
 }
 
-/* modal handling */
+/* ---------- Meals auto gen ---------- */
+function fmtTime(d){ return d.toTimeString().slice(0,5); }
+function parseHM(hm){ const [h,m]=hm.split(':').map(Number); return {h,m}; }
+
+function getDefaultMeals(year,month,day){
+  const work = getDefaultWorkTime(year,month,day);
+  if(work.includes('Folga')) return `Dia de folga — refeições livres\n☕ 09:30 Café\n🍛 13:00 Almoço\n🍞 16:30 Lanche\n🍲 20:00 Jantar`;
+  // split start/end
+  const parts = work.split('→').map(s=>s.trim());
+  const start = parts[0]; const end = parts[1];
+  const s = parseHM(start); const e = parseHM(end);
+  let startTime = new Date(year,month,day,s.h,s.m);
+  let endTime = new Date(year,month,day,e.h,e.m);
+  if(endTime <= startTime) endTime.setDate(endTime.getDate()+1);
+  // cafe = start - 3h
+  const cafe = new Date(startTime.getTime() - 3*60*60*1000);
+  const almoco = new Date(cafe.getTime() + (1*60+15)*60*1000);
+  const lanche = new Date(startTime.getTime() + 1.5*60*60*1000);
+  const jantar = new Date(endTime.getTime() - 3*60*60*1000);
+  const pos = new Date(endTime.getTime() + 1*60*60*1000);
+  return `☕ ${fmtTime(cafe)} Café da manhã\n🍛 ${fmtTime(almoco)} Almoço\n🍞 ${fmtTime(lanche)} Lanche no trabalho\n🍲 ${fmtTime(jantar)} Jantar\n🥤 ${fmtTime(pos)} Pós-treino`;
+}
+
+/* ---------- Modal Day handling ---------- */
 const modal = document.getElementById('modal');
 const modalTitle = document.getElementById('modalTitle');
+const modalSub = document.getElementById('modalSub');
 const modalBody = document.getElementById('modalBody');
 document.getElementById('closeModal').onclick = ()=> { modal.style.display='none'; modal.setAttribute('aria-hidden','true'); };
 
-function openDayModal(year, month, day, key){
+function openDayModal(year,month,day,key){
   modal.style.display='flex'; modal.setAttribute('aria-hidden','false');
-  modalTitle.innerText = `Dia ${day} — ${new Date(year, month, day).toLocaleString('pt-BR',{month:'long', year:'numeric'})}`;
-  // load saved
+  modalTitle.innerText = `Dia ${day} — ${new Date(year,month,day).toLocaleString('pt-BR',{month:'long', year:'numeric'})}`;
+  modalSub.innerText = `${weekNames[new Date(year,month,day).getDay()]}`;
   const saved = dayData[key] || {};
   modalBody.innerHTML = '';
-  // Trabalho (read-only preview of schedule)
+  // Trabalho (auto)
+  const defaultWork = saved.work || getDefaultWorkTime(year,month,day);
   const tDiv = document.createElement('div'); tDiv.className='field';
-  tDiv.innerHTML = `<label>🏢 Notas de trabalho / turno</label><input type="text" id="m_work" value="${escapeHtml(saved.work||'')}" />`;
+  tDiv.innerHTML = `<label>🏢 Horário de trabalho</label><input type="text" id="m_work" value="${escapeHtml(defaultWork)}" />`;
   modalBody.appendChild(tDiv);
   // Alimentação
+  const defaultMeals = saved.food || getDefaultMeals(year,month,day);
   const aDiv = document.createElement('div'); aDiv.className='field';
-  aDiv.innerHTML = `<label>🍽️ Alimentação (ex: Café / Almoço / Janta / Pós)</label><input type="text" id="m_food" value="${escapeHtml(saved.food||'')}" />`;
+  aDiv.innerHTML = `<label>🍽️ Alimentação (toque para confirmar/alterar)</label>
+    <textarea id="m_food" rows="5">${escapeHtml(defaultMeals)}</textarea>
+    <div style="margin-top:6px"><button class="btn" id="confirmMeals">✅ Confirmar consumo</button> <button class="btn" id="alterMeals">✏️ Alterar</button></div>`;
   modalBody.appendChild(aDiv);
   // Treino
   const trDiv = document.createElement('div'); trDiv.className='field';
   trDiv.innerHTML = `<label>🏋️ Treino (intensidade / notas)</label><input type="text" id="m_train" value="${escapeHtml(saved.train||'')}" />`;
   modalBody.appendChild(trDiv);
-  // custom title preview
-  const tit = document.createElement('div'); tit.className='field';
-  tit.innerHTML = `<label>Título curto (aparece no dia)</label><input type="text" id="m_title" value="${escapeHtml(saved.title||'')}" />`;
-  modalBody.appendChild(tit);
+  // Tarefas (basic)
+  const taDiv = document.createElement('div'); taDiv.className='field';
+  taDiv.innerHTML = `<label>🏠 Tarefas de casa</label><input type="text" id="m_tasks" value="${escapeHtml(saved.tasks||'Varrer a cada 3 dias; Passar pano a cada 6 dias; Limpar box semanal; Limpar móveis a cada 10 dias; Limpar geladeira mensal; Limpar fogão mensal')}" />`;
+  modalBody.appendChild(taDiv);
 
-  // save handler
+  // hydration quick (display)
+  const hidInfo = document.createElement('div'); hidInfo.className='field';
+  const hid = loadJSON(storagePrefix+'hydration',{bottles:[0,0], extra:0});
+  hidInfo.innerHTML = `<label>💧 Hidratação</label>
+    <div style="display:flex;gap:8px;align-items:center">
+      <div id="bottle0" style="cursor:pointer;border:1px solid var(--border);padding:6px;border-radius:8px">Garrafa A<br><span class="small" id="b0txt">${hid.bottles[0]}/4</span></div>
+      <div id="bottle1" style="cursor:pointer;border:1px solid var(--border);padding:6px;border-radius:8px">Garrafa B<br><span class="small" id="b1txt">${hid.bottles[1]}/4</span></div>
+      <div style="display:flex;flex-direction:column;gap:6px">
+        <button class="btn" id="addDrop">+25 ml</button>
+        <div class="small">Total hoje: <span id="hidTotal">${hid.bottles[0]*125+hid.bottles[1]*125+hid.extra}</span> ml</div>
+      </div>
+    </div>`;
+  modalBody.appendChild(hidInfo);
+
+  // handlers
+  document.getElementById('confirmMeals').onclick = ()=> {
+    // mark all meals as consumed and decrement bau items heuristically
+    const text = document.getElementById('m_food').value;
+    markMealsConsumed(key, text, year,month,day);
+    alert('Refeições confirmadas e registro atualizado.');
+    renderCalendar(); updateHealthPanel(); saveAll();
+    modal.style.display='none';
+  };
+  document.getElementById('alterMeals').onclick = ()=> {
+    const newv = prompt('Descreva o que comeu (ex: 2 ovos; 1 pão; 150g arroz):', document.getElementById('m_food').value);
+    if(newv!==null){ document.getElementById('m_food').value = newv; }
+  };
+
+  // hydration bottle clicks
+  document.getElementById('bottle0').onclick = ()=> { toggleBottle(0); document.getElementById('b0txt').innerText = loadJSON(storagePrefix+'hydration',{bottles:[0,0],extra:0}).bottles[0] + '/4'; document.getElementById('hidTotal').innerText = totalHydration(); updateHealthPanel(); };
+  document.getElementById('bottle1').onclick = ()=> { toggleBottle(1); document.getElementById('b1txt').innerText = loadJSON(storagePrefix+'hydration',{bottles:[0,0],extra:0}).bottles[1] + '/4'; document.getElementById('hidTotal').innerText = totalHydration(); updateHealthPanel(); };
+  document.getElementById('addDrop').onclick = ()=> { addDrop(); document.getElementById('hidTotal').innerText = totalHydration(); updateHealthPanel(); };
+
+  // save modal
   document.getElementById('modalSave').onclick = ()=>{
     const nw = document.getElementById('m_work').value.trim();
     const nf = document.getElementById('m_food').value.trim();
     const nt = document.getElementById('m_train').value.trim();
-    const ntit = document.getElementById('m_title').value.trim();
-    dayData[key] = { work: nw, food: nf, train: nt, title: ntit };
-    // persist to localStorage
-    localStorage.setItem(storageKey, JSON.stringify(dayData));
-    // update UI: re-render grid
+    const ntasks = document.getElementById('m_tasks').value.trim();
+    dayData[key] = {work:nw, food:nf, train:nt, tasks:ntasks, savedAt: new Date().toISOString()};
+    saveAll();
     renderCalendar();
+    updateHealthPanel();
     modal.style.display='none';
-    modal.setAttribute('aria-hidden','true');
   };
 }
 
-/* helper escape */
+/* ---------- Simple heuristic meal consumption & bau decrementation ---------- */
+function markMealsConsumed(key, text, year,month,day){
+  // crude parsing: look for common words and decrement bau
+  // For this demo, implement simple decrements: if contains 'ovo' => -2 eggs, 'arroz' => -150g arroz, 'frango' => -150g frango etc.
+  const lower = text.toLowerCase();
+  const used = [];
+  if(lower.includes('ovo')) used.push({name:'Ovos',qty:2,unit:'un'});
+  if(lower.includes('pão')||lower.includes('pao')) used.push({name:'Pão francês',qty:1,unit:'un'});
+  if(lower.includes('arroz')) used.push({name:'Arroz cozido (geladeira)',qty:150,unit:'g'});
+  if(lower.includes('banana')) used.push({name:'Banana',qty:1,unit:'un'});
+  if(lower.includes('leite')) used.push({name:'Leite (aberto)',qty:200,unit:'ml'});
+  // decrement bau items
+  used.forEach(u=> decrementBau(u.name,u.qty));
+  // record calories naive: assume 500kcal per main meal as fallback
+  const kcal = estimateKcalFromText(lower);
+  // store in dayData and healthStore
+  const keyDate = `${year}-${(month+1).toString().padStart(2,'0')}-${String(day).padStart(2,'0')}`;
+  dayData[keyDate] = dayData[keyDate] || {};
+  dayData[keyDate].calories = (dayData[keyDate].calories||0) + kcal;
+  dayData[keyDate].consumed = true;
+  // update health store
+  healthStore[keyDate] = healthStore[keyDate] || {kcal:0,agua:0,sono:0,treino:0};
+  healthStore[keyDate].kcal = (healthStore[keyDate].kcal||0) + kcal;
+  saveAll();
+}
+
+/* naive kcal estimate */
+function estimateKcalFromText(s){
+  if(s.includes('shake') || s.includes('hipercalorico')) return 600;
+  if(s.includes('arroz') && s.includes('frango')) return 700;
+  if(s.includes('ovo')) return 220;
+  if(s.includes('banana')) return 120;
+  return 500;
+}
+
+/* decrement BAU by name (simple) */
+function decrementBau(name, qty){
+  for(let i=0;i<bau.length;i++){
+    if(bau[i].nome.toLowerCase().includes(name.toLowerCase())){
+      // try to reduce quantity sensibly
+      if(bau[i].unidade==='un') bau[i].qtd = Math.max(0, bau[i].qtd - qty);
+      else bau[i].qtd = Math.max(0, bau[i].qtd - qty);
+      saveJSON(bauKey,bau);
+      renderBAUList();
+      return true;
+    }
+  }
+  return false;
+}
+
+/* ---------- Hydration functions ---------- */
+function loadHyd(){ return loadJSON(storagePrefix+'hydration',{bottles:[0,0],extra:0}); }
+function saveHyd(h){ saveJSON(storagePrefix+'hydration',h); }
+function toggleBottle(idx){
+  const h = loadHyd();
+  h.bottles[idx] = (h.bottles[idx] + 1) % 5; // 0..4 (4 means full)
+  if(h.bottles[idx]>4) h.bottles[idx]=4;
+  saveHyd(h);
+}
+function addDrop(){ const h = loadHyd(); h.extra = (h.extra||0) + 25; saveHyd(h); }
+function totalHydration(){
+  const h = loadHyd(); return h.bottles[0]*125 + h.bottles[1]*125 + (h.extra||0);
+}
+
+/* ---------- BAU rendering & management ---------- */
+const bauListEl = document.getElementById('bauList');
+const bauCount = document.getElementById('bauCount');
+function renderBAUList(){
+  bauListEl.innerHTML=''; bauCount.innerText = bau.length;
+  bau.slice().forEach((it,idx)=>{
+    const div = document.createElement('div'); div.className='bau-item';
+    div.innerHTML = `<strong>${it.nome}</strong><div class="small">${it.setor} — ${it.sub || ''}</div>
+      <div class="small">Qtd: ${it.qtd} ${it.unidade||''}</div>
+      <div style="display:flex;gap:6px;margin-top:6px"><button class="btn" onclick="useBau(${idx})">Usar</button><button class="btn" onclick="editBau(${idx})">Editar</button></div>`;
+    bauListEl.appendChild(div);
+  });
+}
+window.useBau = function(i){
+  const it = bau[i];
+  const amt = prompt(`Quanto usar de "${it.nome}"? (ex: 1 un, 150 g)`, it.unidade==='un'? '1' : Math.max(1, Math.round(it.qtd/10)));
+  if(amt!==null){
+    // naive subtract
+    const num = parseFloat(amt);
+    if(!isNaN(num)) {
+      it.qtd = Math.max(0, it.qtd - num);
+      saveJSON(bauKey,bau); renderBAUList();
+    }
+  }
+}
+window.editBau = function(i){
+  const it = bau[i];
+  const name = prompt('Nome', it.nome);
+  if(name!==null){ it.nome = name; saveJSON(bauKey,bau); renderBAUList(); }
+}
+
+document.getElementById('navBau').onclick = ()=> openBauModal();
+
+/* BAU modal handlers */
+document.getElementById('closeBau').onclick = ()=> { document.getElementById('bauModal').style.display='none'; }
+document.getElementById('addBau').onclick = ()=>{
+  const name = document.getElementById('newName').value.trim(); const qty = document.getElementById('newQty').value.trim();
+  if(!name) return alert('Nome vazio');
+  bau.push({nome:name, setor: classify(name), sub:'', qtd: parseQty(qty), unidade: qty.replace(/[0-9\.\s\-]/g,'') || ''});
+  saveJSON(bauKey,bau); renderBAUList();
+  document.getElementById('newName').value=''; document.getElementById('newQty').value='';
+}
+
+/* helper classify */
+function classify(name){
+  const s = name.toLowerCase();
+  if(s.includes('banana') || s.includes('ovo') || s.includes('leite')) return 'Geladeira';
+  if(s.includes('arroz')||s.includes('feijão')||s.includes('farinha')||s.includes('granola')) return 'Despensa';
+  if(s.includes('fone')||s.includes('placa')||s.includes('monitor')) return 'Digital';
+  return 'Outros';
+}
+function parseQty(q){ if(!q) return 1; const n=parseFloat(q); return isNaN(n)?1:n; }
+
+/* render the BAU manage list inside modal */
+function openBauModal(){ document.getElementById('bauModal').style.display='flex'; renderBauManage(); }
+function renderBauManage(){
+  const el = document.getElementById('bauManageList'); el.innerHTML='';
+  bau.forEach((it,idx)=>{ const d=document.createElement('div'); d.style.display='flex'; d.style.justifyContent='space-between'; d.style.padding='6px 0'; d.innerHTML = `<div><strong>${it.nome}</strong> <div class="small">${it.setor} • ${it.qtd} ${it.unidade||''}</div></div>
+    <div style="display:flex;gap:6px"><button class="btn" onclick="useBau(${idx})">Usar</button><button class="btn" onclick="editBau(${idx})">Editar</button></div>`; el.appendChild(d); });
+}
+
+/* ---------- Health panel rendering ---------- */
+const navCalendar = document.getElementById('navCalendar');
+const navHealth = document.getElementById('navHealth');
+const navPanel = document.getElementById('navPanel');
+const navBau = document.getElementById('navBau');
+
+navCalendar.onclick = ()=> switchNav('calendar');
+navHealth.onclick = ()=> switchNav('health');
+navPanel.onclick = ()=> switchNav('panel');
+navBau.onclick = ()=> openBauModal();
+
+function switchNav(name){
+  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('nav'+capitalize(name)).classList.add('active');
+  document.getElementById('healthSection').style.display = (name==='health')?'block':'none';
+  document.getElementById('bauSection').style.display = (name==='bau')?'block':'none';
+}
+
+function capitalize(s){ return s.charAt(0).toUpperCase()+s.slice(1); }
+
+/* Pizza chart draw */
+const pizzaCanvas = document.getElementById('pizza');
+const pizzaCtx = pizzaCanvas.getContext('2d');
+function drawPizza(parts){
+  // parts: [aguaPct, kcalPct, sonoPct, treinoPct] each 0..1
+  pizzaCanvas.width = pizzaCanvas.clientWidth*2;
+  pizzaCanvas.height = pizzaCanvas.clientHeight*2;
+  pizzaCtx.clearRect(0,0,pizzaCanvas.width,pizzaCanvas.height);
+  const cx = pizzaCanvas.width/2, cy = pizzaCanvas.height/2, r = Math.min(cx,cy)-8;
+  let start = -Math.PI/2;
+  const colors = ['#4da3ff','#9dd3ff','#ffd66b','#b6ffd8']; // Agua,Kcal,Sono,Treino
+  for(let i=0;i<4;i++){
+    const ang = Math.max(0, Math.min(1, parts[i])) * Math.PI*2 * 0.25*4; // scale simple
+    const end = start + parts[i]*Math.PI*2;
+    pizzaCtx.beginPath(); pizzaCtx.moveTo(cx,cy); pizzaCtx.arc(cx,cy,r,start,end); pizzaCtx.closePath();
+    pizzaCtx.fillStyle = colors[i]; pizzaCtx.globalAlpha = 0.95; pizzaCtx.fill();
+    start = end;
+  }
+  // center circle
+  pizzaCtx.beginPath(); pizzaCtx.fillStyle='#ffffff'; pizzaCtx.globalAlpha=1; pizzaCtx.arc(cx,cy,r*0.5,0,Math.PI*2); pizzaCtx.fill();
+}
+
+/* health calculations & week bars */
+function updateHealthPanel(){
+  // today label
+  document.getElementById('todayLabel').innerText = new Date().toLocaleDateString();
+  document.getElementById('metaKcal').innerText = meta.kcalTarget;
+  document.getElementById('metaAgua').innerText = meta.aguaTarget;
+  document.getElementById('kcalMetaLabel').innerText = meta.kcalTarget;
+  document.getElementById('aguaMetaLabel').innerText = meta.aguaTarget;
+  document.getElementById('sonoMetaLabel').innerText = meta.sonoTarget;
+
+  // get today's health values
+  const today = new Date();
+  const key = `${today.getFullYear()}-${(today.getMonth()+1).toString().padStart(2,'0')}-${String(today.getDate()).padStart(2,'0')}`;
+  const h = healthStore[key] || {kcal: dayData[key]?.calories || 0, agua: totalHydration(), sono: dayData[key]?.sono || 0, treino: dayData[key]?.treino || 0};
+  // compute percentage per metric
+  const aguaPct = Math.min(1, h.agua / meta.aguaTarget);
+  const kcalPct = Math.min(1, h.kcal / meta.kcalTarget);
+  const sonoPct = Math.min(1, h.sono / meta.sonoTarget);
+  const treinoLvl = h.treino || 0; // 0..3
+  const treinoPct = Math.min(1, treinoLvl/3);
+  // equilibrium with weights Agua/Kcal/Sono=0.25 each, Treino=0.20
+  const equ = Math.round(((aguaPct*0.25)+(kcalPct*0.25)+(sonoPct*0.25)+(treinoPct*0.20)) * 100);
+  document.getElementById('equilibriumPct').innerText = equ + ' %';
+  document.getElementById('aguaNow').innerText = h.agua;
+  document.getElementById('kcalNow').innerText = h.kcal;
+  document.getElementById('sonoNow').innerText = h.sono;
+  document.getElementById('treinoNow').innerText = h.treino ? 'Concluído' : '—';
+  // draw pizza
+  drawPizza([aguaPct,kcalPct,sonoPct,treinoPct]);
+  // fill weekly bars (last 7 days)
+  renderWeekBars();
+}
+
+/* week bars */
+function renderWeekBars(){
+  const now = new Date();
+  const days = [];
+  for(let i=6;i>=0;i--){
+    const d = new Date(now.getFullYear(), now.getMonth(), now.getDate()-i);
+    const k = `${d.getFullYear()}-${(d.getMonth()+1).toString().padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+    const rec = healthStore[k] || {kcal: dayData[k]?.calories || 0, agua: loadHydForDay(k) || 0, sono: dayData[k]?.sono || 0, treino: dayData[k]?.treino||0};
+    const aguaPct = Math.min(1, rec.agua / meta.aguaTarget);
+    const kcalPct = Math.min(1, rec.kcal / meta.kcalTarget);
+    const sonoPct = Math.min(1, rec.sono / meta.sonoTarget);
+    const treinoPct = Math.min(1, (rec.treino||0)/3);
+    const equ = Math.round(((aguaPct*0.25)+(kcalPct*0.25)+(sonoPct*0.25)+(treinoPct*0.20)) * 100);
+    days.push({label: ['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'][d.getDay()], pct: equ, k});
+  }
+  // render bars
+  const container = document.getElementById('weekBars'); container.innerHTML='';
+  days.forEach(day=>{
+    const wrap = document.createElement('div'); wrap.style.margin='6px 0';
+    const row = document.createElement('div'); row.style.display='flex'; row.style.justifyContent='space-between'; row.style.alignItems='center';
+    row.innerHTML = `<div style="width:60px">${day.label}</div><div style="flex:1;margin-left:8px"><div class="bar"><i style="width:${day.pct}%"></i></div></div><div style="width:40px;text-align:right;font-weight:700">${day.pct}%</div>`;
+    container.appendChild(row);
+  });
+}
+
+/* load hydration for day (naive: today only) */
+function loadHydForDay(key){ if(key===`${new Date().getFullYear()}-${(new Date().getMonth()+1).toString().padStart(2,'0')}-${String(new Date().getDate()).padStart(2,'0')}`) return totalHydration(); return 0; }
+
+/* ---------- Monthly progress ---------- */
+function updateMonthlyProgress(){
+  // compute average equilibrium for current month
+  const {year,month} = getRenderMonth();
+  const daysInMonth = new Date(year,month+1,0).getDate();
+  let sum=0,count=0;
+  for(let d=1;d<=daysInMonth;d++){
+    const key = `${year}-${(month+1).toString().padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+    const rec = healthStore[key];
+    if(rec && typeof rec.equilibrium === 'number'){ sum+=rec.equilibrium; count++; }
+  }
+  const avg = count? Math.round(sum/count) : 0;
+  const prog = avg; document.getElementById('monthlyProgress').style.width = prog+'%';
+}
+
+/* ---------- Save / Export ---------- */
+function saveAll(){ saveJSON(dayDataKey, dayData); saveJSON(bauKey, bau); saveJSON(healthKey, healthStore); saveHyd(loadHyd()); updateMonthlyProgress(); }
+document.getElementById('saveLocal').onclick = ()=> { saveAll(); alert('Salvo localmente.'); };
+document.getElementById('exportBtn').onclick = ()=> {
+  const all = {dayData, bau, healthStore, hyd: loadHyd()};
+  const blob = new Blob([JSON.stringify(all,null,2)],{type:'application/json'}); const url = URL.createObjectURL(blob); const a=document.createElement('a'); a.href=url; a.download='KING_Backup_'+(new Date().toISOString().slice(0,10))+'.json'; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
+};
+
+/* ---------- Utilities ---------- */
 function escapeHtml(s){ return String(s||'').replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
 
-/* save all local-day changes to file (export download) */
-document.getElementById('exportBtn').onclick = ()=>{
-  const blob = new Blob([JSON.stringify(dayData,null,2)], {type:'application/json'});
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a'); a.href = url; a.download = 'KING_backup_'+(new Date().toISOString().slice(0,10))+'.json';
-  document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
-};
+/* ---------- Init renderers ---------- */
+renderBAUList(); updateHealthPanel(); renderCalendar();
 
-/* Save button (explicit) — saves current local data (already saved on modal but explicit save enforces persist) */
-document.getElementById('saveLocal').onclick = ()=>{
-  try{
-    localStorage.setItem(storageKey, JSON.stringify(dayData));
-    alert('Alterações salvas localmente.');
-  }catch(e){ alert('Erro ao salvar: '+e) }
-};
+/* re-render when online/offline */
+window.addEventListener('online', ()=>{ renderCalendar(); document.getElementById('subInfo').innerText='Sincronizado — exibindo mês atual'; });
+window.addEventListener('offline', ()=>{ document.getElementById('subInfo').innerText='Offline — mostrando mês de fallback'; });
 
-/* render initial */
-renderCalendar();
+/* small helpers for hydration toggles saved earlier */
+(function initHydDisplay(){
+  const h = loadHyd();
+  // ensure values 0..4
+  h.bottles = h.bottles || [0,0]; h.extra = h.extra || 0; saveHyd(h);
+})();
 
-/* auto-refresh when connection status changes: if we go online, recalc month (useful to switch to current month) */
-window.addEventListener('online', ()=>{
-  // when coming online, switch to current month/year
-  renderCalendar();
-  document.getElementById('subInfo').innerText = 'Sincronizado — exibindo mês atual';
-});
-window.addEventListener('offline', ()=>{
-  document.getElementById('subInfo').innerText = 'Offline — mostrando mês de fallback';
-});
+/* expose some for debugging console if needed */
+window.KING = {dayData, bau, healthStore, saveAll, renderCalendar, updateHealthPanel};
 
 </script>
 </body>
 </html>
-
-
