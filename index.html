@@ -1,446 +1,61 @@
 <!doctype html>
 <html lang="pt-BR">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>KING — Calendário (Imperial Refinado)</title>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
-<meta name="theme-color" content="#1b1b1b">
-<style>
-  :root{
-    /* base ajustado 40% mais claro mantendo tom */
-    --bg:#1b1b1b;           /* fundo (mais claro) */
-    --day:#2a2a2a;          /* caixas dos dias */
-    --card:#222222;
-    --muted:#b6bcc2;
-    --text:#f3f3f3;         /* branco suave */
-    --gold:#c6b25a;         /* dourado metálico suave (ajustado) */
-    --red:#8b0000;
-    --smoke:rgba(255,255,255,0.06);
-    --glass:rgba(255,255,255,0.02);
-    --taskbar-h:90px;
-    --transition:200ms;
-  }
-  *{box-sizing:border-box}
-  html,body{height:100%;margin:0;background:var(--bg);color:var(--text);font-family:'Poppins',sans-serif;-webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale}
-  a{color:inherit;text-decoration:none}
-
-  /* header */
-  .header{display:flex;align-items:center;justify-content:space-between;padding:12px 14px;border-bottom:1px solid rgba(255,255,255,0.03);background:linear-gradient(180deg, rgba(255,255,255,0.01), transparent)}
-  .brand{display:flex;flex-direction:column}
-  .brand .title{font-weight:700;color:var(--gold);letter-spacing:0.4px}
-  .brand .sub{font-size:12px;color:var(--muted);margin-top:4px}
-  .controls{display:flex;gap:8px;align-items:center}
-  .btn{background:transparent;border:1px solid rgba(255,255,255,0.04);padding:8px 10px;border-radius:10px;color:var(--text);cursor:pointer;font-size:13px;transition:all var(--transition) ease}
-  .btn:hover{transform:translateY(-3px)}
-  .btn.primary{background:linear-gradient(180deg,var(--gold),#d8c370);border:0;color:#1b1b1b;font-weight:700;box-shadow:0 8px 20px rgba(198,178,90,0.12)}
-
-  /* monthly bar */
-  .monthly-wrap{padding:10px 14px}
-  .monthly-bar{height:6px;background:rgba(255,255,255,0.02);border-radius:6px;border:1px solid rgba(255,255,255,0.03);overflow:hidden}
-  .monthly-fill{height:100%;width:0;background:linear-gradient(90deg,var(--gold),#e6d990);transition:width .6s ease}
-
-  /* main calendar */
-  main{flex:1;display:block;height:calc(100vh - 176px);overflow:auto;padding:14px}
-  .calendar{max-width:1200px;margin:0 auto;display:flex;flex-direction:column;gap:12px}
-  .weeknames{display:grid;grid-template-columns:repeat(7,1fr);gap:12px}
-  .wday{font-weight:700;text-align:center;color:var(--muted);font-size:13px}
-  .grid{display:grid;grid-template-columns:repeat(7,1fr);gap:12px}
-  .cell{
-    background:linear-gradient(180deg,var(--day), #262626);
-    min-height:96px;
-    border-radius:12px;
-    padding:10px;
-    border:1px solid rgba(255,255,255,0.025);
-    position:relative;
-    display:flex;
-    flex-direction:column;
-    justify-content:flex-start;
-    align-items:flex-start;
-    transition:transform .18s ease, box-shadow .18s ease, opacity .18s ease;
-    cursor:pointer;
-    color:var(--text);
-    overflow:hidden;
-  }
-  .cell:hover{transform:translateY(-6px);box-shadow:0 26px 56px rgba(0,0,0,0.55)}
-  .cell .num{font-weight:700;font-size:18px}
-  .cell .preview{font-size:13px;color:var(--muted);margin-top:8px;max-width:100%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-  .cell.past{opacity:0.58;filter:grayscale(.04)}
-  .cell.today{outline:3px solid rgba(198,178,90,0.12);box-shadow:0 10px 36px rgba(198,178,90,0.04)}
-  .cell.folga{background:linear-gradient(180deg, rgba(139,0,0,0.12), rgba(139,0,0,0.05));border:1px solid rgba(139,0,0,0.10)}
-  .cell .tag{position:absolute;right:8px;bottom:8px;font-size:11px;color:rgba(255,255,255,0.92)}
-
-  /* taskbar fixed */
-  .taskbar{position:fixed;left:12px;right:12px;bottom:12px;height:var(--taskbar-h);background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.01));border-radius:18px;display:flex;align-items:center;justify-content:space-between;padding:12px 18px;border:1px solid rgba(255,255,255,0.03);z-index:60;backdrop-filter:blur(6px)}
-  .slot{display:flex;gap:18px;align-items:center}
-  .icon{width:64px;height:64px;border-radius:12px;display:flex;align-items:center;justify-content:center;background:transparent;border:1px solid rgba(255,255,255,0.03);color:var(--muted);font-size:20px;cursor:pointer;transition:all var(--transition) ease}
-  .icon:hover{transform:translateY(-4px);box-shadow:0 16px 32px rgba(0,0,0,0.45)}
-  .icon:active{transform:scale(.98)}
-  .icon.active{border-color:rgba(198,178,90,0.18);color:var(--gold)}
-
-  /* modal overlay */
-  .modal{position:fixed;left:0;top:0;width:100%;height:100%;display:none;align-items:center;justify-content:center;background:linear-gradient(rgba(0,0,0,0.6),rgba(0,0,0,0.6));z-index:120;padding:12px}
-  .panel{width:100%;max-width:980px;background:linear-gradient(180deg,#171717,#0f0f0f);padding:16px;border-radius:12px;border:1px solid rgba(255,255,255,0.04);box-shadow:0 40px 120px rgba(0,0,0,0.6);animation:panelIn .28s ease}
-  @keyframes panelIn{from{transform:translateY(8px);opacity:0}to{transform:translateY(0);opacity:1}}
-
-  .panel .head{display:flex;justify-content:space-between;align-items:center}
-  .panel .head h3{margin:0}
-  .close-x{background:transparent;border:1px solid rgba(255,255,255,0.04);padding:6px 10px;border-radius:8px;color:var(--muted);cursor:pointer}
-
-  /* modal content */
-  .sections{display:grid;grid-template-columns:1fr;gap:10px;margin-top:12px}
-  .section{background:rgba(255,255,255,0.02);padding:12px;border-radius:10px;border:1px solid rgba(255,255,255,0.02)}
-  .section h4{margin:0 0 6px 0;font-size:14px}
-  .row{display:flex;gap:8px;align-items:center}
-  textarea, input, select{width:100%;padding:8px;border-radius:8px;background:transparent;border:1px solid rgba(255,255,255,0.06);color:var(--text);resize:vertical}
-  textarea{min-height:60px}
-  .small{font-size:13px;color:var(--muted)}
-
-  /* floating health actions */
-  .float-actions{position:fixed;right:18px;bottom:calc(12px + var(--taskbar-h) + 12px);display:flex;flex-direction:column;gap:10px;z-index:140}
-  .fab{width:56px;height:56px;border-radius:999px;display:flex;align-items:center;justify-content:center;background:linear-gradient(180deg,var(--gold),#d6bf68);color:#121212;font-weight:700;box-shadow:0 18px 36px rgba(198,178,90,0.14);cursor:pointer;border:none;transition:transform var(--transition)}
-  .fab.small{width:48px;height:48px;background:linear-gradient(180deg,#fff6df,#ffd66b);font-size:14px}
-  .fab:active{transform:scale(.96)}
-
-  @media(max-width:900px){
-    .panel{padding:12px}
-    .cell{min-height:86px}
-    .icon{width:58px;height:58px}
-    .taskbar{left:8px;right:8px}
-    .float-actions{right:12px;bottom:calc(10px + var(--taskbar-h) + 8px)}
-  }
-</style>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>KING — Diagnóstico Rápido</title>
+  <style>
+    body{font-family:system-ui,-apple-system,Segoe UI,Roboto,'Poppins',sans-serif;background:#121212;color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;height:100vh;margin:0;padding:20px}
+    .card{background:#1e1e1e;padding:20px;border-radius:12px;max-width:520px;width:100%;box-shadow:0 20px 60px rgba(0,0,0,0.6);text-align:center}
+    h1{margin:0 0 8px 0;font-size:20px;color:#ffd66b}
+    p{color:#cfcfcf;margin:8px 0 16px 0}
+    button{background:#ffd66b;border:none;padding:10px 14px;border-radius:8px;font-weight:700;cursor:pointer}
+    pre{background:#0b0b0b;color:#dcdcdc;padding:10px;border-radius:8px;overflow:auto;text-align:left;max-height:180px}
+    .muted{color:#9aa0a6;font-size:13px;margin-top:8px}
+  </style>
 </head>
 <body>
+  <div class="card" role="main">
+    <h1>KING — Diagnóstico Rápido</h1>
+    <p id="msg">Teste de publicação. Ao abrir esta página, o deploy atual está mostrando o conteúdo mais recente.</p>
 
-<!-- header -->
-<header class="header">
-  <div class="brand">
-    <div class="title">👑 KING</div>
-    <div class="sub">Tema Imperial — Refinado</div>
-  </div>
-  <div class="controls">
-    <button class="btn" id="saveBtn">Salvar</button>
-    <button class="btn" id="exportBtn">Exportar</button>
-  </div>
-</header>
-
-<!-- monthly progress -->
-<div class="monthly-wrap">
-  <div class="monthly-bar"><div id="monthlyFill" class="monthly-fill"></div></div>
-</div>
-
-<!-- main calendar -->
-<main>
-  <div class="calendar" role="application" aria-label="Calendário do mês">
-    <div class="weeknames" id="weekHead"></div>
-    <div id="calendarGrid" class="grid" role="grid" aria-live="polite" aria-label="Dias do mês"></div>
-  </div>
-</main>
-
-<!-- taskbar -->
-<div class="taskbar" role="navigation" aria-label="Barra de tarefas">
-  <div class="slot left-slot">
-    <div class="icon active" id="monthBtn" title="Calendário">📅</div>
-  </div>
-
-  <div class="slot center-slot" style="gap:18px">
-    <div class="icon" id="healthIcon" title="Saúde">💧</div>
-    <div class="icon" id="agendaIcon" title="Agenda">🗂️</div>
-  </div>
-
-  <div class="slot right-slot">
-    <div class="icon" id="bauBtn" title="BAÚ">🧰</div>
-    <div class="icon" id="settingsBtn" title="Config">⚙️</div>
-  </div>
-</div>
-
-<!-- floating action buttons (health) -->
-<div class="float-actions" id="floatActions" style="display:none" aria-hidden="true">
-  <button class="fab" id="fabAddFood" title="Adicionar alimento">🍽</button>
-  <button class="fab small" id="fabAddWater" title="+150 ml">+150</button>
-</div>
-
-<!-- Day modal -->
-<div class="modal" id="dayModal" aria-hidden="true">
-  <div class="panel" role="dialog" aria-modal="true" aria-labelledby="dayTitle">
-    <div class="head">
-      <div>
-        <h3 id="dayTitle">Dia</h3>
-        <div class="small" id="daySubtitle"></div>
-      </div>
-      <div class="right-actions">
-        <button class="close-x" id="closeDay">Fechar</button>
-      </div>
+    <div style="display:flex;gap:10px;justify-content:center;margin-bottom:10px">
+      <button id="tsBtn">Ver timestamp</button>
+      <button id="lsBtn">Ver armazenamento (localStorage)</button>
     </div>
 
-    <div class="sections">
-      <div class="section">
-        <h4>Trabalho</h4>
-        <div class="small">Horário calculado (referência saída/chegada)</div>
-        <div style="margin-top:8px;white-space:pre-line" id="workTime" class="small"></div>
-      </div>
-
-      <div class="section">
-        <h4>Alimentação</h4>
-        <div class="small">Sugestões (edite se necessário)</div>
-        <div style="margin-top:8px" id="mealsContainer"></div>
-      </div>
-
-      <div class="section">
-        <h4>Treino</h4>
-        <label class="small">Intensidade</label>
-        <select id="trainIntensity" style="margin-top:6px">
-          <option value="high">Alta</option>
-          <option value="moderate">Moderada</option>
-          <option value="low">Leve</option>
-        </select>
-        <div style="margin-top:8px" class="small">Duração (horas)</div>
-        <input id="trainDuration" type="number" min="0" max="4" step="0.5" value="1.5" style="margin-top:6px" />
-      </div>
-
-      <div class="section">
-        <h4>Gastos & Ganhos</h4>
-        <div class="small">Adicione gastos (negativo) ou ganhos (positivo)</div>
-        <div style="display:flex;gap:8px;margin-top:8px">
-          <input id="txDesc" placeholder="Descrição (ex.: aluguel)" />
-          <input id="txValue" placeholder="Valor R$" type="number" />
-          <button class="btn" id="addTx">Adicionar</button>
-        </div>
-        <div id="txList" style="margin-top:8px"></div>
-      </div>
-
-      <div class="section">
-        <h4>Exercícios (em casa)</h4>
-        <textarea id="exList" placeholder="Ex.: Peito — 3 exercícios x 2 rounds"></textarea>
-      </div>
-
-      <div class="section">
-        <h4>Tarefas de Casa</h4>
-        <div class="small">Rotina de limpeza (editar frequência quando quiser)</div>
-        <textarea id="chores" placeholder="Ex.: Varrer a cada 3 dias, passar pano a cada 6 dias"></textarea>
-      </div>
-
-      <div style="display:flex;justify-content:flex-end;gap:8px">
-        <button class="btn" id="deleteDay">Apagar dia</button>
-        <button class="btn primary" id="saveDay">Salvar</button>
-      </div>
-    </div>
+    <div id="out" style="margin-top:8px"></div>
+    <div class="muted">Instruções: substitua o arquivo no repositório, salve e abra a URL com <code>?v=now</code> para forçar atualização.</div>
   </div>
-</div>
-
-<!-- Health modal -->
-<div class="modal" id="healthModal" aria-hidden="true">
-  <div class="panel" role="dialog" aria-modal="true" aria-labelledby="healthTitle">
-    <div class="head">
-      <div>
-        <h3 id="healthTitle">Painel de Saúde</h3>
-        <div class="small" id="healthSub">Resumo rápido</div>
-      </div>
-      <div class="right-actions">
-        <button class="close-x" id="closeHealth">Fechar</button>
-      </div>
-    </div>
-
-    <div style="margin-top:12px;display:grid;grid-template-columns:1fr 1fr;gap:12px">
-      <div>
-        <div class="small">Hidratação</div>
-        <div style="display:flex;gap:8px;align-items:center;margin-top:8px">
-          <div style="text-align:center;cursor:pointer" id="bottleAwrap">
-            <div id="hydA" style="font-weight:700;color:var(--gold);font-size:18px">0/4</div>
-            <div class="small">Garrafa A</div>
-          </div>
-          <div style="text-align:center;cursor:pointer" id="bottleBwrap">
-            <div id="hydB" style="font-weight:700;color:var(--gold);font-size:18px">0/4</div>
-            <div class="small">Garrafa B</div>
-          </div>
-          <div style="margin-left:auto">
-            <button class="btn" id="add25">+25 ml</button>
-            <div class="small" style="margin-top:8px">Total: <strong id="waterTotal">0</strong> ml</div>
-          </div>
-        </div>
-
-        <div style="margin-top:12px" class="small">Água Meta: <strong id="metaWater">2100</strong> ml</div>
-      </div>
-
-      <div>
-        <div class="small">Kcal (hoje)</div>
-        <div style="margin-top:8px;font-weight:700" id="kcalToday">0 / 2606</div>
-        <div style="margin-top:12px" class="small">Sono</div>
-        <div style="margin-top:6px" id="sleepToday">0 / 8h</div>
-        <div style="margin-top:12px" class="small">Treino</div>
-        <div style="margin-top:6px" id="trainToday">—</div>
-      </div>
-    </div>
-
-    <div style="margin-top:12px;display:flex;justify-content:space-between;align-items:center">
-      <div class="small">Registre alimentos e água rapidamente</div>
-      <div style="display:flex;gap:10px">
-        <button class="btn" id="btnAddWaterTop">+150 ml</button>
-        <button class="btn primary" id="btnAddFoodTop">Adicionar alimento</button>
-      </div>
-    </div>
-  </div>
-</div>
 
 <script>
-/* KING v5.8.1 — Tema Imperial Refinado
-   - fundo mais claro 40%
-   - calendar default
-   - taskbar fixed 90px
-   - health and bau accessible in taskbar
-   - travel 60 min, buffer 20 min
-   - animations sutis
-   - localStorage persistence
-*/
-
-const PREFIX = 'KING_v581_';
-const KEY_DAY = PREFIX + 'days';
-const KEY_HYD = PREFIX + 'hydration';
-const KEY_HEALTH = PREFIX + 'health';
-const META = { kcal:2606, agua:2100, sono:8 };
-
-/* user folgas (dados fornecidos) */
-const FOLGAS = new Set([4,9,18,23,24]);
-
-/* travel params */
-const TRAVEL_MIN = 60;
-const ARRIVE_BUFFER_MIN = 20;
-
-/* storage helpers */
-function load(key, fallback){ try{ const s = localStorage.getItem(key); return s ? JSON.parse(s) : fallback; }catch(e){ return fallback; } }
-function save(key, val){ localStorage.setItem(key, JSON.stringify(val)); }
-
-let days = load(KEY_DAY, {});
-let hydration = load(KEY_HYD, {bottles:[0,0], extra:0});
-let health = load(KEY_HEALTH, {});
-
-/* DOM refs */
-const weekHead = document.getElementById('weekHead');
-const calendarGrid = document.getElementById('calendarGrid');
-const monthlyFill = document.getElementById('monthlyFill');
-const saveBtn = document.getElementById('saveBtn');
-const exportBtn = document.getElementById('exportBtn');
-
-const dayModal = document.getElementById('dayModal');
-const dayTitle = document.getElementById('dayTitle');
-const daySubtitle = document.getElementById('daySubtitle');
-const workTimeEl = document.getElementById('workTime');
-const mealsContainer = document.getElementById('mealsContainer');
-const trainIntensity = document.getElementById('trainIntensity');
-const trainDuration = document.getElementById('trainDuration');
-const txDesc = document.getElementById('txDesc');
-const txValue = document.getElementById('txValue');
-const txList = document.getElementById('txList');
-const addTxBtn = document.getElementById('addTx');
-const exList = document.getElementById('exList');
-const chores = document.getElementById('chores');
-const saveDayBtn = document.getElementById('saveDay');
-const deleteDayBtn = document.getElementById('deleteDay');
-const closeDayBtn = document.getElementById('closeDay');
-
-const healthModal = document.getElementById('healthModal');
-const healthIcon = document.getElementById('healthIcon');
-const agendaIcon = document.getElementById('agendaIcon');
-const bauIcon = document.getElementById('bauBtn');
-const settingsIcon = document.getElementById('settingsBtn');
-const monthBtn = document.getElementById('monthBtn');
-
-const hydA = document.getElementById('hydA');
-const hydB = document.getElementById('hydB');
-const add25Btn = document.getElementById('add25');
-const waterTotal = document.getElementById('waterTotal');
-const kcalToday = document.getElementById('kcalToday');
-const sleepToday = document.getElementById('sleepToday');
-const trainToday = document.getElementById('trainToday');
-const bottleAwrap = document.getElementById('bottleAwrap');
-const bottleBwrap = document.getElementById('bottleBwrap');
-const btnAddWaterTop = document.getElementById('btnAddWaterTop');
-const btnAddFoodTop = document.getElementById('btnAddFoodTop');
-
-const floatActions = document.getElementById('floatActions');
-const fabAddFood = document.getElementById('fabAddFood');
-const fabAddWater = document.getElementById('fabAddWater');
-
-/* date helpers */
-function pad(n){ return String(n).padStart(2,'0'); }
-function keyFrom(y,m,d){ return `${y}-${pad(m)}-${pad(d)}`; }
-function todayKey(){ const n=new Date(); return keyFrom(n.getFullYear(), n.getMonth()+1, n.getDate()); }
-function prettyKey(k){ const p=k.split('-'); return new Date(p[0], p[1]-1, p[2]).toLocaleDateString(); }
-
-/* week header */
-const weekdayNames = ['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];
-function renderWeekHead(){ weekHead.innerHTML=''; weekdayNames.forEach(n=>{ const w=document.createElement('div'); w.className='wday'; w.innerText=n; weekHead.appendChild(w); }); }
-
-/* shift generation */
-function getShiftTimesForWeekday(dateObj){
-  const year = dateObj.getFullYear(), month = dateObj.getMonth(), day = dateObj.getDate();
-  const wd = dateObj.getDay();
-  const map = {
-    0: {start:'15:00', end:'00:20'},
-    1: {start:'14:00', end:'22:20'},
-    2: {start:'14:00', end:'22:20'},
-    3: {start:'18:00', end:'01:20'},
-    4: {start:'19:00', end:'02:20'},
-    5: {start:'19:00', end:'02:20'},
-    6: {start:'19:00', end:'02:20'}
+  document.getElementById('tsBtn').onclick = function(){
+    const d = new Date();
+    document.getElementById('out').innerHTML = '<pre>Timestamp: ' + d.toString() + '\\n\\nURL loaded: ' + location.href + '</pre>';
   };
-  const times = map[wd];
-  const [sh,sm] = times.start.split(':').map(Number);
-  const [eh,em] = times.end.split(':').map(Number);
-  const startDT = new Date(year, month, day, sh, sm);
-  let endDT = new Date(year, month, day, eh, em);
-  if(endDT <= startDT) endDT = new Date(endDT.getTime() + 24*60*60*1000);
-  return { start: startDT, end: endDT };
-}
-function formatWorkReference(dateObj){
-  const shift = getShiftTimesForWeekday(dateObj);
-  const travelMs = TRAVEL_MIN * 60 * 1000;
-  const bufferMs = ARRIVE_BUFFER_MIN * 60 * 1000;
-  const arrivalAtWork = new Date(shift.start.getTime() - bufferMs);
-  const departHome = new Date(arrivalAtWork.getTime() - travelMs);
-  const departWork = shift.end;
-  const arriveHome = new Date(departWork.getTime() + travelMs);
-  function fmt(d){ return `${pad(d.getHours())}:${pad(d.getMinutes())}`; }
-  return `Saída de casa (ref): ${fmt(departHome)} — Chegada ao trabalho (ref): ${fmt(arrivalAtWork)}\nSaída do serviço: ${fmt(departWork)} — Chegada em casa (ref): ${fmt(arriveHome)}`;
-}
-
-/* render calendar */
-function renderCalendar(){
-  if(!calendarGrid) return;
-  calendarGrid.innerHTML='';
-  const now = new Date();
-  const Y = now.getFullYear(), M = now.getMonth();
-  const firstWeekday = new Date(Y,M,1).getDay();
-  const daysInMonth = new Date(Y,M+1,0).getDate();
-
-  for(let i=0;i<firstWeekday;i++){
-    const blank=document.createElement('div');
-    calendarGrid.appendChild(blank);
-  }
-
-  for(let d=1; d<=daysInMonth; d++){
-    const cell = document.createElement('div');
-    cell.className = 'cell';
-    const num = document.createElement('div'); num.className='num'; num.innerText = d;
-    const preview = document.createElement('div'); preview.className='preview';
-    const k = keyFrom(Y,M+1,d);
-    const saved = days[k] || {};
-    if(saved.foodShort) preview.innerText = '🍽 ' + saved.foodShort;
-    else if(saved.plannedShakes) preview.innerText = '🥤 Shake';
-    else preview.innerText = '';
-
-    cell.appendChild(num);
-    cell.appendChild(preview);
-
-    const today = new Date();
-    if(M === today.getMonth()){
-      if(d < today.getDate()) cell.classList.add('past');
-      if(d === today.getDate()) cell.classList.add('today');
+  document.getElementById('lsBtn').onclick = function(){
+    try{
+      let keys = Object.keys(localStorage);
+      if(keys.length === 0){
+        document.getElementById('out').innerHTML = '<pre>localStorage vazio</pre>';
+        return;
+      }
+      let out = 'localStorage contents:\\n\\n';
+      keys.forEach(k=>{
+        let v = localStorage.getItem(k);
+        // limit size shown
+        if(v && v.length>1000) v = v.slice(0,1000) + '... (truncated)';
+        out += k + ' = ' + (v||'null') + '\\n\\n';
+      });
+      document.getElementById('out').innerHTML = '<pre>' + out + '</pre>';
+    }catch(e){
+      document.getElementById('out').innerHTML = '<pre>Erro lendo localStorage: ' + e.message + '</pre>';
     }
-    if(FOLGAS.has(d)) {
-      cell.classList.add('folga');
-      const t=document.createElement('div'); t.className='tag'; t.innerText='Folga'; cell.appendChild(t);
-    }
-
-    cell.onclick = ()=> openDayMod
+  };
+  // auto-run small check and show hint
+  (function(){
+    document.getElementById('out').innerHTML = '<pre>Diagnóstico pronto — clique em "Ver timestamp" para confirmar versão atual do arquivo.</pre>';
+  })();
+</script>
+</body>
+</html>
